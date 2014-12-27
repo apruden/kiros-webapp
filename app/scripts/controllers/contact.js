@@ -8,5 +8,5 @@
  * Controller of the kirosWebApp
  */
 angular.module('kirosWebApp')
-  .controller('AboutCtrl', function ($scope) {
+  .controller('ContactCtrl', function ($scope) {
   });

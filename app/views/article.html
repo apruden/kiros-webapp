@@ -1,0 +1,22 @@
+<div>
+	<article>
+	<div>
+		<button class="btn" ng-click="editArticle($item)">edit</button>
+		<button class="btn" ng-click="deleteArticle($item)">delete</button>
+	</div>
+	<div marked="article.content">
+	</div>
+	<div>
+		<form role="form">
+			<div class="form-group">
+				<input type="text" ng-model="newComment" class="form-control"/>
+			</div>
+			<button type="submit" class="btn btn-primary">Add</button>
+			<button type="button" class="btn">Cancel</button>
+		</form>
+		<div ng-repeat="comment in comments">
+		</div>
+		<button ng-click="loadComments()" class="btn btn-primary">Show more</button>
+	</div>
+	</article>
+</div>

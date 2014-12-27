@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name kirosWebappApp
+ * @name kirosWebApp
  * @description
- * # kirosWebappApp
+ * # kirosWebApp
  *
  * Main module of the application.
  */
 angular
-  .module('kirosWebappApp', [
+  .module('kirosWebApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -20,12 +20,24 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        templateUrl: 'views/wiki.html',
+        controller: 'WikiCtrl'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
+      .when('/wiki/articles', {
+        templateUrl: 'views/article-edit.html',
+        controller: 'ArticleEditCtrl'
+      })
+      .when('/wiki/articles/:articleId', {
+        templateUrl: 'views/article-edit.html',
+        controller: 'ArticleEditCtrl'
+      })
+      .when('/wiki/articles/:articleId/:slug', {
+        templateUrl: 'views/article.html',
+        controller: 'ArticleCtrl'
+      })
+      .when('/contact', {
+        templateUrl: 'views/contact.html',
+        controller: 'ContactCtrl'
       })
       .otherwise({
         redirectTo: '/'

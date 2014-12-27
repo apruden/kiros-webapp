@@ -2,16 +2,11 @@
 
 /**
  * @ngdoc function
- * @name kirosWebappApp.controller:MainCtrl
+ * @name kirosWebApp.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the kirosWebappApp
+ * Controller of the kirosWebApp
  */
-angular.module('kirosWebappApp')
+angular.module('kirosWebApp')
   .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
   });
