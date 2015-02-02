@@ -9,24 +9,25 @@
  */
 
 angular.module('kirosWebApp')
-  .controller('WikiCtrl', ['$scope', 'Articles', function ($scope, Articles) {
-    /*$scope.articles = [{title: 'atest',
-        content:'#testing',
-        comments:[{content: 'this is a __test__ here', user: {userId: '123', username: 'test@test.com'} }]}]; //wikiArticlesResource.find();*/
+
+.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', function ($scope, $location, $localStorage, Articles) {
+    if ($location.search().access_token) {
+        console.log('Saving access token');
+        $localStorage.accessToken = $location.search().access_token;
+        $location.search({});
+    }
 
     $scope.articles = Articles.query();
 
     $scope.editArticle = function () {
         console.log('edit article');
     };
-  }])
-  .controller('ArticleEditCtrl',['$scope', '$routeParams', 'Articles', function($scope, $routeParams, Articles) {
-    $scope.article = {title:'test', content:'toto __test__'};
-  }])
-  .controller('ArticleCtrl',['$scope', '$routeParams', 'Articles', function($scope,$routeParams, Articles) {
-    $scope.article = {
-        title: 'test',
-        content: 'thi is #test __here__',
-        comments:[{}]
-    };
-  }]);
+}])
+
+.controller('ArticleEditCtrl',['$scope', '$routeParams', 'Articles', function($scope, $routeParams, Articles) {
+    $scope.article = Articles.get({id: $routeParams.id});
+}])
+
+.controller('ArticleCtrl',['$scope', '$routeParams', 'Articles', function($scope, $routeParams, Articles) {
+    $scope.article = Articles.get({id: $routeParams.id});
+}]);

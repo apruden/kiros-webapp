@@ -8,6 +8,7 @@
 *
 * Main module of the application.
 */
+
 angular
 .module('kirosWebApp', [
     'ngAnimate',
@@ -15,9 +16,10 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ngStorage'
 ])
-.config(function ($routeProvider, $httpProvider) {
+.config(function ($routeProvider, $httpProvider, $locationProvider) {
     $routeProvider
     .when('/', {
         templateUrl: 'views/wiki.html',
@@ -40,31 +42,42 @@ angular
         controller: 'ContactCtrl'
     })
     .otherwise({
-        redirectTo: '/'
+        redirectTo: function(a, b, c) {
+            console.log('got >>>' + a + '>>' + b + '>>' + c);
+            return '/';
+        }
     });
 
-    $httpProvider.defaults.headers.common.Authorization = 'Bearer MTIzOnRvdG9AdGVzdC5jb206d2lraXxobWFj'
-
-    $httpProvider.interceptors.push(function($q) {
+    $locationProvider.html5Mode(true);
+    $httpProvider.interceptors.push('authInterceptor');
+})
+.factory('authInterceptor', function($q, $localStorage) {
         return {
+            'request': function(conf) {
+                if (!conf.headers.Authorization &&
+                    $localStorage.accessToken) {
+                    conf.headers.Authorization = 'Bearer ' + $localStorage.accessToken;
+                }
+
+                return conf;
+            },
             'response': function(response) {
                 // do something on success
-                console.log('>>>ok')
                 return response || $q.when(response);
             },
 
             'responseError': function(rejection) {
-                debugger;
-                console.log('<<<ERR:' + rejection);
-                window.location = 'https://localhost:20000/'
+                console.log(rejection);
+                delete $localStorage.accessToken;
+                window.location = 'https://localhost:20000/authorize?client_id=123&scope=wiki&state=&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2F&response_type=token';
+
+                //$httpProvider.defaults.headers.common.Authorization = 'Bearer MTIzOnRvdG9AdGVzdC5jb206d2lraXxobWFj';
                 // do something on error
                 /*if (canRecover(rejection)) {
                     return responseOrNewPromise;
                 }
 
                 return $q.reject(rejection);*/
-
             }
         };
-    });
 });

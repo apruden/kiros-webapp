@@ -9,4 +9,5 @@
  */
 angular.module('kirosWebApp')
   .controller('AboutCtrl', function ($scope) {
+      console.log($scope);
   });

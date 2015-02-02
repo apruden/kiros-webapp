@@ -9,4 +9,5 @@
  */
 angular.module('kirosWebApp')
   .controller('ContactCtrl', function ($scope) {
+    console.log($scope);
   });

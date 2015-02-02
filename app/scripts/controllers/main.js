@@ -8,5 +8,12 @@
  * Controller of the kirosWebApp
  */
 angular.module('kirosWebApp')
-  .controller('MainCtrl', function ($scope) {
-  });
+  .controller('MainCtrl', ['$scope', '$location', '$localStorage', function ($scope, $location, $localStorage) {
+      debugger;
+
+      if ($location.search().access_token) {
+          console.log('Saving access token');
+          $localStorage.accessToken = $location.search().access_token;
+      }
+
+  }]);
