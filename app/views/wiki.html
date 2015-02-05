@@ -1,20 +1,24 @@
 <div>
-	<button class="btn btn-primary">Add article</button>
+	<button class="btn btn-primary" ng-click="addArticle()">Add article</button>
 	<article ng-repeat="article in articles">
 	<div>
-		<a href="" ng-click="editArticle($item)">edit</a>
-		<a href="" ng-click="deleteArticle($item)">delete</a>
+		<a href="" ng-click="editArticle(article)">edit</a>
+		<a href="" ng-click="deleteArticle(article)">delete</a>
 	</div>
 	<div marked="article.content"></div>
 	<div>
-		<form role="form">
+		<form role="form" ng-submit="addComment(article)">
 			<div class="form-group">
 				<textarea ng-model="newComment" class="form-control"></textarea>
 			</div>
-			<button type="submit" class="btn btn-primary">Add</button>
+			<button type="submit" class="btn btn-primary">Add comment</button>
 			<button type="button" class="btn">Cancel</button>
 		</form>
 		<div ng-repeat="comment in article.comments">
+			<div>
+				<a href="" ng-click="editComment(article, comment)">edit</a>
+				<a href="" ng-click="deleteComment(article, comment)">delete</a>
+			</div>
 			<a href="">{{comment.user.username}}</a><span>x ago</span>
 			<div marked="comment.content">
 			</div>

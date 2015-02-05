@@ -17,7 +17,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ngStorage'
+    'ngStorage',
+    'angularFileUpload'
 ])
 .config(function ($routeProvider, $httpProvider, $locationProvider) {
     $routeProvider
@@ -69,7 +70,7 @@ angular
             'responseError': function(rejection) {
                 console.log(rejection);
                 delete $localStorage.accessToken;
-                window.location = 'https://localhost:20000/authorize?client_id=123&scope=wiki&state=&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2F&response_type=token';
+                window.location = 'https://localhost:20000/authorize?client_id=123&scope=wiki%20auth&state=&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2F&response_type=token';
 
                 //$httpProvider.defaults.headers.common.Authorization = 'Bearer MTIzOnRvdG9AdGVzdC5jb206d2lraXxobWFj';
                 // do something on error
