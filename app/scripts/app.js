@@ -18,7 +18,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngStorage',
-    'angularFileUpload'
+    'angularFileUpload',
+    'ui.bootstrap'
 ])
 .config(function ($routeProvider, $httpProvider, $locationProvider) {
     $routeProvider
@@ -69,16 +70,13 @@ angular
 
             'responseError': function(rejection) {
                 console.log(rejection);
-                delete $localStorage.accessToken;
-                window.location = 'https://localhost:20000/authorize?client_id=123&scope=wiki%20auth&state=&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2F&response_type=token';
 
-                //$httpProvider.defaults.headers.common.Authorization = 'Bearer MTIzOnRvdG9AdGVzdC5jb206d2lraXxobWFj';
-                // do something on error
-                /*if (canRecover(rejection)) {
-                    return responseOrNewPromise;
+                if (rejection.status === 401) {
+                    delete $localStorage.accessToken;
+                    window.location = 'https://localhost:20000/authorize?client_id=123&scope=wiki%20auth&state=&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2F&response_type=token';
                 }
 
-                return $q.reject(rejection);*/
+                return $q.reject(rejection);
             }
         };
 });

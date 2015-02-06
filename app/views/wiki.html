@@ -7,23 +7,26 @@
 	</div>
 	<div marked="article.content"></div>
 	<div>
-		<form role="form" ng-submit="addComment(article)">
-			<div class="form-group">
-				<textarea ng-model="newComment" class="form-control"></textarea>
-			</div>
-			<button type="submit" class="btn btn-primary">Add comment</button>
-			<button type="button" class="btn">Cancel</button>
-		</form>
-		<div ng-repeat="comment in article.comments">
-			<div>
+		<button class="btn" ng-click="toggleComment(article)" ng-show="newCommentsCollapsed[article.articleId]">Add comment</button>
+		<div collapse="newCommentsCollapsed[article.articleId]">
+			<form role="form" ng-submit="addComment(article)">
+				<div class="form-group">
+					<textarea ng-model="newComments[article.articleId].content" class="form-control"></textarea>
+				</div>
+				<button type="submit" class="btn btn-primary">Send</button>
+				<button class="btn" ng-click="toggleComment(article)">Cancel</button>
+			</form>
+		</div>
+		<div class="media" ng-repeat="comment in comments[article.articleId]">
+			<div class="pull-right">
+				<a href="">{{comment.user.username}}</a><span>x ago</span>
 				<a href="" ng-click="editComment(article, comment)">edit</a>
 				<a href="" ng-click="deleteComment(article, comment)">delete</a>
 			</div>
-			<a href="">{{comment.user.username}}</a><span>x ago</span>
-			<div marked="comment.content">
+			<div class="media-body" marked="comment.content">
 			</div>
 		</div>
-		<button class="btn btn-primary" ng-click="loadComments()">Show more</button>
+		<button class="btn btn-primary" ng-click="loadComments(article)">Show more</button>
 	</div>
 	</article>
 </div>

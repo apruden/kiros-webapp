@@ -10,18 +10,47 @@
 
 angular.module('kirosWebApp')
 
-.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', function ($scope, $location, $localStorage, Articles) {
+.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Articles, Comments, Accounts) {
+
     if ($location.search().access_token) {
         console.log('Saving access token');
         $localStorage.accessToken = $location.search().access_token;
         $location.search({});
     }
 
-    $scope.newComment = {};
-    $scope.articles = Articles.query();
+    var me = Accounts.get();
+
+    $scope.newComments = {};
+    $scope.comments = {};
+    $scope.newCommentsCollapsed = {};
+
+    $scope.articles = Articles.query(function(res) {
+        res.forEach(function(a){
+            $scope.newCommentsCollapsed[a.articleId] = true;
+            $scope.newComments[a.articleId] = {
+                commentId: '',
+                targetId: a.articleId,
+                content: '',
+                attachments:[],
+                postedBy: me,
+                posted: new Date().toISOString()};
+            $scope.comments[a.articleId] = [];
+        });
+    });
+
+    $scope.toggleComment = function(a) {
+       $scope.newCommentsCollapsed[a.articleId] ^= true;
+    };
 
     $scope.addComment = function(a) {
-        a.comments.push(a);
+        Comments.save($scope.newComments[a.articleId]);
+        $scope.newComments[a.articleId] = {
+                commentId: '',
+                targetId: a.articleId,
+                content: '',
+                attachments:[],
+                postedBy: me,
+                posted: new Date().toISOString()};
     };
 
     $scope.addArticle = function() {
@@ -32,11 +61,19 @@ angular.module('kirosWebApp')
         console.log('edit article');
         $location.path('/wiki/articles/' + a.articleId);
     };
+
+    $scope.loadComments = function(a) {
+        Comments.query({articleId: a.articleId}, function(comments) {
+            comments.forEach(function(c) {
+                $scope.comments[a.articleId].push(c)
+            });
+        });
+    };
 }])
 
 .controller('ArticleEditCtrl',['$scope', '$routeParams', '$localStorage', '$upload', 'Articles', 'Accounts',
         function($scope, $routeParams, $localStorage, $upload, Articles, Accounts) {
-    var me =Accounts.get();
+    var me = Accounts.get();
     $scope.article = $routeParams.id ? Articles.get({id: $routeParams.id}) : {
         articleId: '',
         title : '',
@@ -45,8 +82,7 @@ angular.module('kirosWebApp')
         createdBy: me,
         lastEditBy: {},
         lastEdit: '',
-        attachments: [],
-        comments: []
+        attachments: []
     };
 
     $scope.attachments = [];
