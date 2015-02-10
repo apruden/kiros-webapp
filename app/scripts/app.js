@@ -27,6 +27,14 @@ angular
         templateUrl: 'views/wiki.html',
         controller: 'WikiCtrl'
     })
+    .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'AccountCtrl'
+    })
+    .when('/logout', {
+        templateUrl: 'views/login.html',
+        controller: 'AccountCtrl'
+    })
     .when('/wiki/articles', {
         templateUrl: 'views/article-edit.html',
         controller: 'ArticleEditCtrl'
@@ -45,7 +53,6 @@ angular
     })
     .otherwise({
         redirectTo: function(a, b, c) {
-            console.log('got >>>' + a + '>>' + b + '>>' + c);
             return '/';
         }
     });
@@ -53,9 +60,9 @@ angular
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
 })
-.factory('authInterceptor', function($q, $localStorage) {
+.factory('authInterceptor', function($q, $location, $localStorage) {
         return {
-            'request': function(conf) {
+            request: function(conf) {
                 if (!conf.headers.Authorization &&
                     $localStorage.accessToken) {
                     conf.headers.Authorization = 'Bearer ' + $localStorage.accessToken;
@@ -63,17 +70,15 @@ angular
 
                 return conf;
             },
-            'response': function(response) {
-                // do something on success
+            response : function(response) {
                 return response || $q.when(response);
             },
-
-            'responseError': function(rejection) {
-                console.log(rejection);
-
+            responseError: function(rejection) {
                 if (rejection.status === 401) {
                     delete $localStorage.accessToken;
-                    window.location = 'https://localhost:20000/authorize?client_id=123&scope=wiki%20auth&state=&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2F&response_type=token';
+                    if ($location.path() !== '/login') {
+                        $location.path('/login');
+                    }
                 }
 
                 return $q.reject(rejection);

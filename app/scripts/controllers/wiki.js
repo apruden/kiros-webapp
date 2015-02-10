@@ -10,14 +10,49 @@
 
 angular.module('kirosWebApp')
 
-.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Articles, Comments, Accounts) {
+.controller('AccountCtrl', ['$scope', '$location', '$localStorage', '$http', 'Accounts', function($scope, $location, $localStorage, $http, Accounts) {
 
-    if ($location.search().access_token) {
-        console.log('Saving access token');
-        $localStorage.accessToken = $location.search().access_token;
-        $location.search({});
+    if ($location.path() === '/logout') {
+        delete $localStorage.accessToken;
+        $location.path('/login');
     }
 
+    $scope.account = '';
+    $scope.password = '';
+    $scope.error = '';
+
+    $scope.login = function () {
+        $http.post('https://localhost:20000/token', {
+            grant_type : 'password',
+            scope: 'wiki',
+            username: $scope.username,
+            password: $scope.password
+        }, {
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            transformRequest: function(obj) {
+                var str = [];
+                for(var p in obj) {
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                }
+
+                return str.join("&");
+            }
+        })
+        .success(function(data, status, headers, config) {
+            if (data.access_token) {
+                console.log('Saving access token');
+                $localStorage.accessToken = data.access_token;
+                $location.path('/');
+            }
+        })
+        .error(function(data, status, headers, config) {
+            $scope.error = {status: status, data: data};
+        });
+    };
+
+}])
+
+.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Articles, Comments, Accounts) {
     var me = Accounts.get();
 
     $scope.newComments = {};
