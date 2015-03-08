@@ -9,7 +9,6 @@
  */
 angular.module('kirosWebApp')
   .controller('MainCtrl', ['$scope', '$location', '$localStorage', function ($scope, $location, $localStorage) {
-      debugger;
 
       if ($location.search().access_token) {
           console.log('Saving access token');

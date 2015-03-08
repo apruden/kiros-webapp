@@ -35,6 +35,10 @@ angular
         templateUrl: 'views/login.html',
         controller: 'AccountCtrl'
     })
+    .when('/settings', {
+        templateUrl: 'views/settings.html',
+        controller: 'AccountSettingsCtrl'
+    })
     .when('/wiki/articles', {
         templateUrl: 'views/article-edit.html',
         controller: 'ArticleEditCtrl'
@@ -52,7 +56,7 @@ angular
         controller: 'ContactCtrl'
     })
     .otherwise({
-        redirectTo: function(a, b, c) {
+        redirectTo: function() {
             return '/';
         }
     });
