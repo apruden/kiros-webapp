@@ -33,18 +33,21 @@ angular.module('kirosWebApp')
     });
 
     $scope.toggleComment = function(a) {
-       $scope.newCommentsCollapsed[a.articleId] = $scope.newCommentsCollapsed[a.articleId] === true;
+       $scope.newCommentsCollapsed[a.articleId] = !$scope.newCommentsCollapsed[a.articleId];
     };
 
     $scope.addComment = function(a) {
-        Comments.save($scope.newComments[a.articleId]);
-        $scope.newComments[a.articleId] = {
-                commentId: '',
-                targetId: a.articleId,
-                content: '',
-                attachments:[],
-                postedBy: me,
-                posted: new Date().toISOString()};
+        Comments.save($scope.newComments[a.articleId], function(){
+            $scope.toggleComment(a);
+            $scope.newComments[a.articleId] = $scope.newComments[a.articleId] || []
+            $scope.newComments[a.articleId].push({
+                    commentId: '',
+                    targetId: a.articleId,
+                    content: '',
+                    attachments:[],
+                    postedBy: me,
+                    posted: new Date().toISOString()});
+        });
     };
 
     $scope.addArticle = function() {

@@ -25,17 +25,20 @@
     <div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li class="active"><a ng-href="#">Home</a></li>
+          <li><a ng-href="#">Home</a></li>
           <li><a ng-href="/settings">Settings</a></li>
           <li><a ng-href="/logout">Logout</a></li>
         </ul>
-        <h3 class="text-muted">kirosWeb</h3>
-      </div>
-
+				<form class="navbar-form pull-right" role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+				</form>
+				<h3 class="text-muted">kiros</h3>
+			</div>
       <div ng-view=""></div>
-
       <div class="footer">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+        <p><span class="glyphicon glyphicon-heart"></span> from PFS team</p>
       </div>
     </div>
     <!-- build:js(.) scripts/oldieshim.js -->

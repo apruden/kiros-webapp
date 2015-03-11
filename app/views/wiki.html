@@ -2,31 +2,42 @@
 	<button class="btn btn-primary" ng-click="addArticle()">Add article</button>
 	<article ng-repeat="article in articles">
 	<div>
-		<a href="" ng-click="editArticle(article)">edit</a>
-		<a href="" ng-click="deleteArticle(article)">delete</a>
+		<div class="btn-group pull-right" dropdown>
+			<button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+				Actions <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#" ng-click="editArticle(article)">Edit</a></li>
+				<li><a href="#" ng-click="deleteArticle(article)">Delete</a></li>
+			</ul>
+		</div>
+		<h2>{{article.title}}</h2>
 	</div>
 	<div marked="article.content"></div>
 	<div>
-		<button class="btn" ng-click="toggleComment(article)" ng-show="newCommentsCollapsed[article.articleId]">Add comment</button>
+		<h3>Comments</h3>
+		<div>
+			<button class="btn btn-default" ng-click="toggleComment(article)" ng-show="newCommentsCollapsed[article.articleId]">Add comment</button>
+		</div>
 		<div collapse="newCommentsCollapsed[article.articleId]">
 			<form role="form" ng-submit="addComment(article)">
 				<div class="form-group">
 					<textarea ng-model="newComments[article.articleId].content" class="form-control"></textarea>
 				</div>
-				<button type="submit" class="btn btn-primary">Send</button>
-				<button class="btn" ng-click="toggleComment(article)">Cancel</button>
+				<button type="submit" class="btn btn-default">Send</button>
+				<button class="btn btn-default" ng-click="toggleComment(article)">Cancel</button>
 			</form>
 		</div>
 		<div class="media" ng-repeat="comment in comments[article.articleId]">
 			<div class="pull-right">
-				<a href="">{{comment.user.username}}</a><span>x ago</span>
-				<a href="" ng-click="editComment(article, comment)">edit</a>
-				<a href="" ng-click="deleteComment(article, comment)">delete</a>
+				<a href="">{{comment.postedBy.username}}</a> <span timeago="comment.posted"></span>
 			</div>
 			<div class="media-body" marked="comment.content">
 			</div>
 		</div>
-		<button class="btn btn-primary" ng-click="loadComments(article)">Show more</button>
+		<div>
+			<button class="btn btn-default" ng-click="loadComments(article)">Show more</button>
+		</div>
 	</div>
 	</article>
 </div>

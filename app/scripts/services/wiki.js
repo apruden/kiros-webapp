@@ -16,10 +16,7 @@ angular.module('kirosWebApp')
            offset: '@offset' || 0 }, {
                query: {
                    method: 'GET',
-                   interceptor: function(r, e) {
-                       console.log(r);
-                       console.log(e);
-                   }
+                   isArray: true
                }
            });
 }])
