@@ -8,6 +8,13 @@ angular.module('kirosWebApp')
             limit: '@limit' || 20,
            offset: '@offset' || 0 });
 }])
+.factory('Reports', ['$resource', function($resource){
+    return $resource(
+        'https://localhost:20001/reports/:reportId',
+        {reportId: '@reportId',
+            limit: '@limit' || 20,
+           offset: '@offset' || 0 });
+}])
 .factory('Comments', ['$resource', function($resource){
     return $resource(
         'https://localhost:20001/articles/:articleId/comments',

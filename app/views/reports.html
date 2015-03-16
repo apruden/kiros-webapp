@@ -1,0 +1,43 @@
+<div>
+	<button class="btn btn-primary" ng-click="addReport()">Add report</button>
+	<article ng-repeat="report in reports">
+	<div>
+		<div class="btn-group pull-right" dropdown>
+			<button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+				Actions <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#" ng-click="editReport(report)">Edit</a></li>
+				<li><a href="#" ng-click="deleteReport(report)">Delete</a></li>
+			</ul>
+		</div>
+		<h2>{{report.title}}</h2>
+	</div>
+	<div marked="report.content"></div>
+	<div>
+		<h3>Comments</h3>
+		<div>
+			<button class="btn btn-default" ng-click="toggleComment(report)" ng-show="newCommentsCollapsed[report.id]">Add comment</button>
+		</div>
+		<div collapse="newCommentsCollapsed[report.id]">
+			<form role="form" ng-submit="addComment(report)">
+				<div class="form-group">
+					<textarea ng-model="newComments[report.id].content" class="form-control"></textarea>
+				</div>
+				<button type="submit" class="btn btn-default">Send</button>
+				<button class="btn btn-default" ng-click="toggleComment(report)">Cancel</button>
+			</form>
+		</div>
+		<div class="media" ng-repeat="comment in comments[report.id]">
+			<div class="pull-right">
+				<a href="">{{comment.postedBy.username}}</a> <span timeago="comment.posted"></span>
+			</div>
+			<div class="media-body" marked="comment.content">
+			</div>
+		</div>
+		<div>
+			<button class="btn btn-default" ng-click="loadComments(report)">Show more</button>
+		</div>
+	</div>
+	</article>
+</div>

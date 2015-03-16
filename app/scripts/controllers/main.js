@@ -15,4 +15,27 @@ angular.module('kirosWebApp')
           $localStorage.accessToken = $location.search().access_token;
       }
 
+  }])
+  .controller('HeaderCtrl', ['$scope', '$rootScope', '$location', '$localStorage', function($scope, $rootScope, $location, $localStorage) {
+      $scope.authorized = $localStorage.accessToken ? true : false;
+      $scope.username = '';
+
+      $scope.$on('authenticated', function(sender, user) {
+          if (user) {
+            $scope.authorized = true;
+            $scope.username = user.username;
+          } else {
+              $scope.authorized = false;
+            $scope.username = '';
+          }
+      });
+
+      $rootScope.$on('$routeChangeStart', function(ev, next, curr){
+          if (next && next.$$route) {
+              if (!$localStorage.accessToken) {
+                  $location.path('/login');
+              }
+          }
+      });
+
   }]);

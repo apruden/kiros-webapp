@@ -4,17 +4,20 @@
  * @ngdoc function
  * @name kirosWebApp.controller:AboutCtrl
  * @description
- * # WikiCtrl
  * Controller of the kirosWebApp
  */
 
 angular.module('kirosWebApp')
 
 
-.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Articles, Comments, Accounts) {
+.controller('ReportCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Reports, Comments, Accounts) {
+    var me = Accounts.get();
+
     $scope.newComments = {};
+    $scope.comments = {};
     $scope.newCommentsCollapsed = {};
-    $scope.articles = Articles.query(function(res) {
+
+    /*$scope.reports = Reports.query(function(res) {
         res.forEach(function(a){
             $scope.newCommentsCollapsed[a.id] = true;
             $scope.newComments[a.id] = {
@@ -22,18 +25,17 @@ angular.module('kirosWebApp')
                 targetId: a.id,
                 content: '',
                 attachments:[],
-                modifiedBy: {},
-                modified: new Date().toISOString()};
+                postedBy: me,
+                posted: new Date().toISOString()};
+            $scope.comments[a.id] = [];
         });
-    });
+    });*/
 
     $scope.toggleComment = function(a) {
        $scope.newCommentsCollapsed[a.id] = !$scope.newCommentsCollapsed[a.id];
     };
 
     $scope.addComment = function(a) {
-        var me = Accounts.get();
-        a.modifiedBy = me;
         Comments.save($scope.newComments[a.id], function(){
             $scope.toggleComment(a);
             $scope.newComments[a.id] = {
@@ -41,34 +43,59 @@ angular.module('kirosWebApp')
                     targetId: a.id,
                     content: '',
                     attachments:[],
-                    modifiedBy: me,
-                    modified: new Date().toISOString()};
+                    postedBy: me,
+                    posted: new Date().toISOString()};
         });
     };
 
-    $scope.addArticle = function() {
-        $location.path('/wiki/articles');
+    $scope.addReport = function() {
+        console.log('edit report');
+        $location.path('/reports/edit');
     };
 
-    $scope.editArticle = function (a) {
-        console.log('edit article');
-        $location.path('/wiki/articles/' + a.id);
+    $scope.editReport = function (a) {
+        console.log('edit report');
+        $location.path('/reports/edit/' + a.id);
     };
 
     $scope.loadComments = function(a) {
+        Comments.query({reportId: a.id}, function(comments) {
+            comments.forEach(function(c) {
+                $scope.comments[a.id].push(c);
+            });
+        });
     };
 }])
 
-.controller('ArticleEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Articles', 'Accounts',
-        function($scope, $location, $routeParams, $upload, Articles, Accounts) {
+.controller('ReportEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Reports', 'Accounts',
+        function($scope, $location, $routeParams, $upload, Reports, Accounts) {
     var me = Accounts.get();
-    $scope.article = $routeParams.id ? Articles.get({id: $routeParams.id}) : {
+    $scope.report = $routeParams.id ? Reports.get({id: $routeParams.id}) : {
         id: '',
-        title : '',
-        content: '',
-        tags : [],
-        comments: [],
+        date: new Date().toISOString(),
+        activities : [{content: '', duration: 0}],
+        blockers : [],
+        modifiedBy: me,
+        modified: new Date(),
         attachments: []
+    };
+
+    $scope.addActivity = function() {
+        $scope.report.activities.push({content: '', duration:0});
+    };
+
+    $scope.addBlocker = function() {
+        $scope.report.blockers.push({content: ''});
+    };
+
+    $scope.removeActivity = function(a) {
+        var idx = $scope.report.activities.indexOf(a);
+        $scope.report.activities.splice(idx, 1);
+    };
+
+    $scope.removeBlocker = function(a) {
+        var idx = $scope.report.blockers.indexOf(a);
+        $scope.report.blockers.splice(idx, 1);
     };
 
     $scope.attachments = [];
@@ -110,19 +137,16 @@ angular.module('kirosWebApp')
         }
     };
 
-    $scope.saveArticle = function() {
-        $scope.article.modified = new Date().toISOString();
-        $scope.article.modifiedBy = me;
-        $scope.article.attachments = $scope.attachments;
-        Articles.save($scope.article);
-        $location.path('/');
+    $scope.saveReport = function() {
+        $scope.report.modified = new Date().toISOString();
+        $scope.report.modifiedBy = me;
+        $scope.report.attachments = $scope.attachments;
+        console.log(JSON.stringify($scope.report));
+        Reports.save($scope.report);
+        //$location.path('/');
     };
 
     $scope.cancel = function() {
         $location.path('/');
     };
-}])
-
-.controller('ArticleCtrl',['$scope', '$routeParams', 'Articles', function($scope, $routeParams, Articles) {
-    $scope.article = Articles.get({id: $routeParams.id});
 }]);

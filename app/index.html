@@ -1,79 +1,86 @@
 <!doctype html>
 <html class="no-js">
-  <head>
-    <base href="/">
-    <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-  </head>
-  <body ng-app="kirosWebApp">
-    <!--[if lt IE 9]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+	<head>
+		<base href="/">
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+		<!-- build:css(.) styles/vendor.css -->
+		<!-- bower:css -->
+		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+		<!-- endbower -->
+		<!-- endbuild -->
+		<!-- build:css(.tmp) styles/main.css -->
+		<link rel="stylesheet" href="styles/main.css">
+		<!-- endbuild -->
+	</head>
+	<body ng-app="kirosWebApp">
+		<!--[if lt IE 9]>
+		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li><a ng-href="#">Home</a></li>
-          <li><a ng-href="/settings">Settings</a></li>
-          <li><a ng-href="/logout">Logout</a></li>
-        </ul>
-				<form class="navbar-form pull-right" role="search">
+		<!-- Add your site or application content here -->
+		<div class="container">
+			<div ng-controller="HeaderCtrl" class="header">
+				<ul class="nav nav-pills pull-right" ng-show="authorized">
+					<li><a ng-href="#/">Home</a></li>
+					<li><a ng-href="#/reports">Reports</a></li>
+					<li class="dropdown" dropdown>
+					<a href="#" class="dropdown-toggle" dropdown-toggle>{{username}}<span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a ng-href="#/settings">Settings</a></li>
+						<li><a ng-href="#/logout">Logout</a></li>
+					</ul>
+					</li>
+				</ul>
+				<form class="navbar-form pull-right" ng-show="authorized" role="search">
 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="Search">
 					</div>
 				</form>
 				<h3 class="text-muted">kiros</h3>
 			</div>
-      <div ng-view=""></div>
-      <div class="footer">
-        <p><span class="glyphicon glyphicon-heart"></span> from PFS team</p>
-      </div>
-    </div>
-    <!-- build:js(.) scripts/oldieshim.js -->
-    <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.js"></script>
-    <![endif]-->
-    <!-- endbuild -->
+			<div ng-view=""></div>
+			<div class="footer">
+				<p><span class="glyphicon glyphicon-heart"></span> from PFS team</p>
+			</div>
+		</div>
+		<!-- build:js(.) scripts/oldieshim.js -->
+		<!--[if lt IE 9]>
+		<script src="bower_components/es5-shim/es5-shim.js"></script>
+		<script src="bower_components/json3/lib/json3.js"></script>
+		<![endif]-->
+		<!-- endbuild -->
 
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/marked/lib/marked.js"></script>
-    <script src="bower_components/ngstorage/ngStorage.js"></script>
-    <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
+		<!-- build:js(.) scripts/vendor.js -->
+		<!-- bower:js -->
+		<script src="bower_components/jquery/dist/jquery.js"></script>
+		<script src="bower_components/angular/angular.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="bower_components/angular-animate/angular-animate.js"></script>
+		<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+		<script src="bower_components/angular-resource/angular-resource.js"></script>
+		<script src="bower_components/angular-route/angular-route.js"></script>
+		<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+		<script src="bower_components/angular-touch/angular-touch.js"></script>
+		<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+		<script src="bower_components/marked/lib/marked.js"></script>
+		<script src="bower_components/ngstorage/ngStorage.js"></script>
+		<script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+		<!-- endbower -->
+		<!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
-        <script src="scripts/controllers/account.js"></script>
-        <script src="scripts/controllers/wiki.js"></script>
-        <script src="scripts/directives/wiki.js"></script>
-        <script src="scripts/services/wiki.js"></script>
-        <!-- endbuild -->
-</body>
+		<!-- build:js({.tmp,app}) scripts/scripts.js -->
+		<script src="scripts/app.js"></script>
+		<script src="scripts/controllers/main.js"></script>
+		<script src="scripts/controllers/about.js"></script>
+		<script src="scripts/controllers/account.js"></script>
+		<script src="scripts/controllers/wiki.js"></script>
+		<script src="scripts/controllers/report.js"></script>
+		<script src="scripts/directives/wiki.js"></script>
+		<script src="scripts/services/wiki.js"></script>
+		<!-- endbuild -->
+	</body>
 </html>

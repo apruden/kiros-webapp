@@ -55,16 +55,24 @@ angular
         templateUrl: 'views/contact.html',
         controller: 'ContactCtrl'
     })
+    .when('/reports', {
+        templateUrl: 'views/reports.html',
+        controller: 'ReportCtrl'
+    })
+    .when('/reports/edit', {
+        templateUrl: 'views/report-edit.html',
+        controller: 'ReportEditCtrl'
+    })
     .otherwise({
         redirectTo: function() {
             return '/';
         }
     });
 
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(false);
     $httpProvider.interceptors.push('authInterceptor');
 })
-.factory('authInterceptor', function($q, $location, $localStorage) {
+.factory('authInterceptor', function($q, $rootScope, $location, $localStorage) {
         return {
             request: function(conf) {
                 if (!conf.headers.Authorization &&
@@ -80,6 +88,7 @@ angular
             responseError: function(rejection) {
                 if (rejection.status === 401) {
                     delete $localStorage.accessToken;
+
                     if ($location.path() !== '/login') {
                         $location.path('/login');
                     }
