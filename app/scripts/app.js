@@ -97,4 +97,14 @@ angular
                 return $q.reject(rejection);
             }
         };
+})
+.filter('username', function() {
+    return function(t) {
+        return t.split('@')[0];
+    };
+})
+.filter('sdate', function() {
+    return function(t) {
+        return new Date(Date.parse(t)).toDateString();
+    };
 });

@@ -24,7 +24,7 @@
 		<div collapse="newCommentsCollapsed[article.id]">
 			<form role="form" ng-submit="addComment(article)">
 				<div class="form-group">
-					<textarea ng-model="newComments[article.id].content" class="form-control"></textarea>
+					<textarea ng-model="newComments[article.id].content" class="form-control" placeholder="Add a comment"></textarea>
 				</div>
 				<button type="submit" class="btn btn-default">Send</button>
 				<button class="btn btn-default" ng-click="toggleComment(article)">Cancel</button>
@@ -37,9 +37,9 @@
 			<div class="media-body" marked="comment.content">
 			</div>
 		</div>
-		<div>
+		<!--<div>
 			<button class="btn btn-default" ng-click="loadComments(article)">Show more</button>
-		</div>
+		</div>-->
 	</div>
 	</article>
 </div>

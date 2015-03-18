@@ -11,11 +11,9 @@
 angular.module('kirosWebApp')
 
 
-.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Articles, Comments, Accounts) {
-    $scope.newComments = {};
-    $scope.newCommentsCollapsed = {};
-    $scope.articles = Articles.query(function(res) {
-        res.forEach(function(a){
+.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', 'SearchResult', function ($scope, $location, $localStorage, Articles, Comments, Accounts, SearchResult) {
+    function addArticles (articles) {
+        articles.forEach(function(a){
             $scope.newCommentsCollapsed[a.id] = true;
             $scope.newComments[a.id] = {
                 id: '',
@@ -25,7 +23,13 @@ angular.module('kirosWebApp')
                 modifiedBy: {},
                 modified: new Date().toISOString()};
         });
-    });
+    };
+
+    $scope.newComments = {};
+    $scope.newCommentsCollapsed = {};
+    $scope.articles = angular.equals(SearchResult.current, {}) ? Articles.query(function(res) {
+        addArticles(res) ;
+    }) : SearchResult.current.articles;
 
     $scope.toggleComment = function(a) {
        $scope.newCommentsCollapsed[a.id] = !$scope.newCommentsCollapsed[a.id];
@@ -57,6 +61,11 @@ angular.module('kirosWebApp')
 
     $scope.loadComments = function(a) {
     };
+
+    $scope.$on('searchResult', function(e, r) {
+        $scope.articles = r.articles;
+        addArticles(r.articles);
+    });
 }])
 
 .controller('ArticleEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Articles', 'Accounts',

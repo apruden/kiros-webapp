@@ -9,15 +9,14 @@
 
 angular.module('kirosWebApp')
 
-
-.controller('ReportCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Reports, Comments, Accounts) {
+.controller('ReportCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Accounts', 'SearchResult',function ($scope, $location, $localStorage, Reports, Comments, Accounts, SearchResult) {
     var me = Accounts.get();
 
     $scope.newComments = {};
     $scope.comments = {};
     $scope.newCommentsCollapsed = {};
 
-    /*$scope.reports = Reports.query(function(res) {
+    $scope.reports = angular.equals({}, SearchResult.current) ? Reports.query(function(res) {
         res.forEach(function(a){
             $scope.newCommentsCollapsed[a.id] = true;
             $scope.newComments[a.id] = {
@@ -29,7 +28,7 @@ angular.module('kirosWebApp')
                 posted: new Date().toISOString()};
             $scope.comments[a.id] = [];
         });
-    });*/
+    }) : SearchResult.current.reports;
 
     $scope.toggleComment = function(a) {
        $scope.newCommentsCollapsed[a.id] = !$scope.newCommentsCollapsed[a.id];
@@ -59,12 +58,11 @@ angular.module('kirosWebApp')
     };
 
     $scope.loadComments = function(a) {
-        Comments.query({reportId: a.id}, function(comments) {
-            comments.forEach(function(c) {
-                $scope.comments[a.id].push(c);
-            });
-        });
     };
+
+    $scope.$on('searchResult', function(e, r) {
+        $scope.reports = r.reports;
+    });
 }])
 
 .controller('ReportEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Reports', 'Accounts',

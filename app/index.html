@@ -25,22 +25,23 @@
 		<div class="container">
 			<div ng-controller="HeaderCtrl" class="header">
 				<ul class="nav nav-pills pull-right" ng-show="authorized">
-					<li><a ng-href="#/">Home</a></li>
-					<li><a ng-href="#/reports">Reports</a></li>
+					<li><a ng-href="#/">Wiki<span class="badge" ng-show="narticles">{{narticles}}</span></a></li>
+					<li><a ng-href="#/reports">Reports<span class="badge" ng-show="nreports">{{nreports}}</span></a></li>
 					<li class="dropdown" dropdown>
-					<a href="#" class="dropdown-toggle" dropdown-toggle>{{username}}<span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" dropdown-toggle>{{username | username}}<span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a ng-href="#/settings">Settings</a></li>
 						<li><a ng-href="#/logout">Logout</a></li>
 					</ul>
 					</li>
 				</ul>
-				<form class="navbar-form pull-right" ng-show="authorized" role="search">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Search">
+				<form class="navbar-form pull-right" ng-show="authorized" role="search" ng-submit="search()">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search" ng-model="q"/>
+						<span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="clearSearch()"><span class="glyphicon glyphicon-remove-sign"></span></button></span>
 					</div>
 				</form>
-				<h3 class="text-muted">kiros</h3>
+				<h3 class="text-muted">Kiros</h3>
 			</div>
 			<div ng-view=""></div>
 			<div class="footer">

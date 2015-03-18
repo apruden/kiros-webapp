@@ -16,9 +16,9 @@ angular.module('kirosWebApp')
       }
 
   }])
-  .controller('HeaderCtrl', ['$scope', '$rootScope', '$location', '$localStorage', function($scope, $rootScope, $location, $localStorage) {
+  .controller('HeaderCtrl', ['$scope', '$rootScope', '$location', '$localStorage', 'Search', 'SearchResult', function($scope, $rootScope, $location, $localStorage, Search, SearchResult) {
       $scope.authorized = $localStorage.accessToken ? true : false;
-      $scope.username = '';
+      $scope.username = $localStorage.user ? $localStorage.user.username : '';
 
       $scope.$on('authenticated', function(sender, user) {
           if (user) {
@@ -38,4 +38,24 @@ angular.module('kirosWebApp')
           }
       });
 
+      $scope.narticles = 0;
+      $scope.nreports = 0;
+      $scope.q = '';
+
+      $scope.search = function() {
+          Search.get({query: $scope.q}, function(r) {
+              $scope.narticles = r.articles.length;
+              $scope.nreports = r.reports.length;
+              SearchResult.setCurrent(r);
+              $rootScope.$broadcast('searchResult', r);
+          });
+      };
+
+      $scope.clearSearch = function() {
+          $scope.narticles = 0;
+          $scope.nreports = 0;
+          $scope.q = '';
+          SearchResult.setCurrent({});
+          $rootScope.$broadcast('clearSearchResult', {});
+      };
   }]);

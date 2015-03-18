@@ -11,9 +11,11 @@
 				<li><a href="#" ng-click="deleteReport(report)">Delete</a></li>
 			</ul>
 		</div>
-		<h2>{{report.title}}</h2>
+		<h2>{{report.modifiedBy.username | username}} - {{report.modified | sdate}}</h2>
 	</div>
-	<div marked="report.content"></div>
+	<div ng-repeat="blocker in report.blockers" marked="blocker.content" class="alert alert-danger"></div>
+	<div>
+	<div ng-repeat="activity in report.activities" marked="activity.content"></div>
 	<div>
 		<h3>Comments</h3>
 		<div>
@@ -28,16 +30,16 @@
 				<button class="btn btn-default" ng-click="toggleComment(report)">Cancel</button>
 			</form>
 		</div>
-		<div class="media" ng-repeat="comment in comments[report.id]">
+		<div class="media" ng-repeat="comment in report.comments[report.id]">
 			<div class="pull-right">
 				<a href="">{{comment.postedBy.username}}</a> <span timeago="comment.posted"></span>
 			</div>
 			<div class="media-body" marked="comment.content">
 			</div>
 		</div>
-		<div>
+		<!--<div>
 			<button class="btn btn-default" ng-click="loadComments(report)">Show more</button>
-		</div>
+		</div> -->
 	</div>
 	</article>
 </div>

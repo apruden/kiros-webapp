@@ -1,12 +1,23 @@
 'use strict';
 
 angular.module('kirosWebApp')
+.service('SearchResult', function() {
+    var self = this;
+    self.current = {};
+    self.setCurrent = function(c) {
+        self.current = c;
+    };
+})
 .factory('Articles', ['$resource', function($resource){
     return $resource(
         'https://localhost:20001/articles/:articleId',
         {articleId: '@articleId',
             limit: '@limit' || 20,
            offset: '@offset' || 0 });
+}])
+.factory('Search', ['$resource', function($resource){
+    return $resource(
+        'https://localhost:20001/search');
 }])
 .factory('Reports', ['$resource', function($resource){
     return $resource(
