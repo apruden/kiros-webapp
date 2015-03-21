@@ -1,17 +1,27 @@
 'use strict';
 
 angular.module('kirosWebApp')
+
 .directive('marked', [function () {
     return {
         restrict: 'A',
-    scope: {
-        marked: '='
-    },
-    link: function(scope, elem) {
-        elem.html(marked(scope.marked));
-    }
+        scope: {
+            marked: '='
+        },
+        link: function(scope, elem) {
+            if (!scope.marked) {
+                scope.marked = '';
+            }
+
+            scope.$watch('marked', function(val) {
+                elem.html(marked(val));
+            });
+
+            elem.html(marked(scope.marked));
+        }
     };
 }])
+
 .directive('timeago', [function () {
     return {
         restrict: 'A',

@@ -8,36 +8,31 @@ angular.module('kirosWebApp')
         self.current = c;
     };
 })
-.factory('Articles', ['$resource', function($resource){
-    return $resource(
-        'https://localhost:20001/articles/:articleId',
-        {articleId: '@articleId',
-            limit: '@limit' || 20,
-           offset: '@offset' || 0 });
-}])
 .factory('Search', ['$resource', function($resource){
     return $resource(
         'https://localhost:20001/search');
 }])
+.factory('Articles', ['$resource', function($resource){
+    return $resource(
+        'https://localhost:20001/articles/:id',
+        {id: '@articleId',
+         limit: '@limit' || 20,
+         offset: '@offset' || 0 });
+}])
+
 .factory('Reports', ['$resource', function($resource){
     return $resource(
-        'https://localhost:20001/reports/:reportId',
-        {reportId: '@reportId',
+        'https://localhost:20001/reports/:id',
+        {id: '@reportId',
             limit: '@limit' || 20,
            offset: '@offset' || 0 });
 }])
+
 .factory('Comments', ['$resource', function($resource){
     return $resource(
-        'https://localhost:20001/articles/:articleId/comments',
-        {articleId: '@targetId',
-            limit: '@limit' || 20,
-           offset: '@offset' || 0 }, {
-               query: {
-                   method: 'GET',
-                   isArray: true
-               }
-           });
+        'https://localhost:20001/comments', {});
 }])
+
 .factory('Accounts', ['$resource', function($resource) {
     return $resource('https://localhost:20000/me',{}, {
         get: {

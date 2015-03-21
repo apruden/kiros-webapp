@@ -9,12 +9,11 @@
 		<div class="button" ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">Select File</div>
 		<div class="form-group">
 			<ul ng-repeat="att in attachments">
-				<li>{{att.title}} <a href ng-click="removeAttachment(att)">Remove</a></li>
+				<li>{{att.filename}} <a href ng-click="removeAttachment(att)">Remove</a></li>
 			</ul>
 		</div>
-		<button type="submit" class="btn btn-primary">Add</button>
-		<button class="btn" ng-click="cancel()">Cancel</button>
+		<button type="submit" class="btn btn-primary">Save</button>
+		<button type="button" class="btn" ng-click="cancel()">Cancel</button>
 	</form>
 	<div>
 </div>
-

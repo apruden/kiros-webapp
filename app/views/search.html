@@ -1,0 +1,35 @@
+<div>
+
+	<p ng-hide="hasResults">No results :(</p>
+
+	<article ng-repeat="article in articles">
+	<div>
+		<h2><a href="#/articles/{{article.id}}">{{article.title}}</a></h2>
+	</div>
+	<div>
+		<div class="media" ng-repeat="comment in report.comments[report.id]">
+			<div class="pull-right">
+				<a href="">{{comment.postedBy.username}}</a> <span timeago="comment.posted"></span>
+			</div>
+			<div class="media-body" marked="comment.content">
+			</div>
+		</div>
+	</div>
+	</article>
+
+	<article ng-repeat="report in reports">
+	<div>
+		<h2><a href="#/reports/{{report.id}}">{{report.modifiedBy.username | username}} - {{report.modified | sdate}}</a></h2>
+	</div>
+	<div ng-repeat="blocker in report.blockers" marked="blocker.content" class="alert alert-danger"></div>
+	<div>
+		<div class="media" ng-repeat="comment in report.comments[report.id]">
+			<div class="pull-right">
+				<a href="">{{comment.postedBy.username}}</a> <span timeago="comment.posted"></span>
+			</div>
+			<div class="media-body" marked="comment.content">
+			</div>
+		</div>
+	</div>
+	</article>
+</div>

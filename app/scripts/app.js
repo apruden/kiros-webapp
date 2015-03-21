@@ -10,6 +10,7 @@
 */
 
 angular
+
 .module('kirosWebApp', [
     'ngAnimate',
     'ngCookies',
@@ -21,11 +22,16 @@ angular
     'angularFileUpload',
     'ui.bootstrap'
 ])
+
 .config(function ($routeProvider, $httpProvider, $locationProvider) {
     $routeProvider
     .when('/', {
         templateUrl: 'views/wiki.html',
         controller: 'WikiCtrl'
+    })
+    .when('/search', {
+        templateUrl: 'views/search.html',
+        controller: 'SearchCtrl'
     })
     .when('/login', {
         templateUrl: 'views/login.html',
@@ -39,15 +45,15 @@ angular
         templateUrl: 'views/settings.html',
         controller: 'AccountSettingsCtrl'
     })
-    .when('/wiki/articles', {
+    .when('/articles/edit', {
         templateUrl: 'views/article-edit.html',
         controller: 'ArticleEditCtrl'
     })
-    .when('/wiki/articles/:articleId', {
+    .when('/articles/:id/edit', {
         templateUrl: 'views/article-edit.html',
         controller: 'ArticleEditCtrl'
     })
-    .when('/wiki/articles/:articleId/:slug', {
+    .when('/articles/:id', {
         templateUrl: 'views/article.html',
         controller: 'ArticleCtrl'
     })
@@ -57,9 +63,17 @@ angular
     })
     .when('/reports', {
         templateUrl: 'views/reports.html',
-        controller: 'ReportCtrl'
+        controller: 'ReportsCtrl'
     })
     .when('/reports/edit', {
+        templateUrl: 'views/report-edit.html',
+        controller: 'ReportEditCtrl'
+    })
+    .when('/reports/:id', {
+        templateUrl: 'views/report.html',
+        controller: 'ReportCtrl'
+    })
+    .when('/reports/:id/edit', {
         templateUrl: 'views/report-edit.html',
         controller: 'ReportEditCtrl'
     })
@@ -98,11 +112,17 @@ angular
             }
         };
 })
+
 .filter('username', function() {
     return function(t) {
-        return t.split('@')[0];
+        if (t) {
+            return t.split('@')[0];
+        }
+
+        return '';
     };
 })
+
 .filter('sdate', function() {
     return function(t) {
         return new Date(Date.parse(t)).toDateString();

@@ -7,35 +7,39 @@
 				Actions <span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="#" ng-click="editArticle(article)">Edit</a></li>
-				<li><a href="#" ng-click="deleteArticle(article)">Delete</a></li>
+				<li><a href="" ng-click="editArticle(article)">Edit</a></li>
+				<!-- TODO -->
+				<!--<li><a href="#" ng-click="deleteArticle(article)">Delete</a></li>-->
 			</ul>
 		</div>
-		<h2>{{article.title}}</h2>
+		<h2><a href="#/articles/{{article.id}}">{{article.title}}</a></h2>
 	</div>
 	<div marked="article.content"></div>
 	<div>
+		<ul class="list-unstyled">
+			<li ng-repeat="attachment in article.attachments">
+			<a href="/assets/{{attachment.id}}">{{attachment.filename}}</a> modified at <span>{{attachment.modified}}</span>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<h4>Comments</h4>
 		<div>
-			<h3 style="display: inline-block;">Comments</h3>
-			<span>
-				<button class="btn btn-default" ng-click="toggleComment(article)" ng-show="newCommentsCollapsed[article.id]">Add comment</button>
-			</span>
-		</div>
-		<div collapse="newCommentsCollapsed[article.id]">
 			<form role="form" ng-submit="addComment(article)">
 				<div class="form-group">
-					<textarea ng-model="newComments[article.id].content" class="form-control" placeholder="Add a comment"></textarea>
+					<textarea ng-model="newComments[article.id].content" class="form-control" placeholder="Add a comment" rows="1"></textarea>
 				</div>
-				<button type="submit" class="btn btn-default">Send</button>
-				<button class="btn btn-default" ng-click="toggleComment(article)">Cancel</button>
+				<div class="form-group" ng-show="newComments[article.id].content">
+					<button type="submit" class="btn btn-primary">Send</button>
+					<button class="btn btn-default" ng-click="toggleComment(article)">Cancel</button>
+				</div>
 			</form>
 		</div>
 		<div class="media" ng-repeat="comment in article.comments">
 			<div class="pull-right">
 				<a href="">{{comment.postedBy.username}}</a> <span timeago="comment.modified"></span>
 			</div>
-			<div class="media-body" marked="comment.content">
-			</div>
+			<div class="media-body" marked="comment.content"></div>
 		</div>
 		<!--<div>
 			<button class="btn btn-default" ng-click="loadComments(article)">Show more</button>

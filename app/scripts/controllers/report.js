@@ -9,7 +9,7 @@
 
 angular.module('kirosWebApp')
 
-.controller('ReportCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Accounts', 'SearchResult',function ($scope, $location, $localStorage, Reports, Comments, Accounts, SearchResult) {
+.controller('ReportsCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Accounts', 'SearchResult',function ($scope, $location, $localStorage, Reports, Comments, Accounts, SearchResult) {
     var me = Accounts.get();
 
     $scope.newComments = {};
@@ -22,6 +22,7 @@ angular.module('kirosWebApp')
             $scope.newComments[a.id] = {
                 id: '',
                 targetId: a.id,
+                targetType: 'report',
                 content: '',
                 attachments:[],
                 postedBy: me,
@@ -40,6 +41,7 @@ angular.module('kirosWebApp')
             $scope.newComments[a.id] = {
                     id: '',
                     targetId: a.id,
+                    targetType: 'report',
                     content: '',
                     attachments:[],
                     postedBy: me,
@@ -67,6 +69,7 @@ angular.module('kirosWebApp')
 
 .controller('ReportEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Reports', 'Accounts',
         function($scope, $location, $routeParams, $upload, Reports, Accounts) {
+
     var me = Accounts.get();
     $scope.report = $routeParams.id ? Reports.get({id: $routeParams.id}) : {
         id: '',
@@ -107,8 +110,8 @@ angular.module('kirosWebApp')
         var successHandler = function (data, _status, _headers, config) {
             console.log('file ' + config.file.name + ' uploaded. Response: ' + data);
             $scope.attachments.push({
-                filename: data.fileNames[0],
-                title: config.file.name,
+                id: data.fileNames[0],
+                filename: config.file.name,
                 modified: new Date().toISOString()
             });
         };
@@ -139,6 +142,7 @@ angular.module('kirosWebApp')
         $scope.report.modified = new Date().toISOString();
         $scope.report.modifiedBy = me;
         $scope.report.attachments = $scope.attachments;
+        $scope.report.comments = $scope.report.comments || [];
         console.log(JSON.stringify($scope.report));
         Reports.save($scope.report);
         //$location.path('/');
@@ -146,5 +150,12 @@ angular.module('kirosWebApp')
 
     $scope.cancel = function() {
         $location.path('/');
+    };
+}])
+.controller('ReportCtrl',['$scope', '$location', '$routeParams', 'Reports', function($scope, $location, $routeParams, Reports) {
+    $scope.report = Reports.get({id: $routeParams.id});
+
+    $scope.editReport = function() {
+        $location.path('/reports/' + $scope.report.id +'/edit');
     };
 }]);

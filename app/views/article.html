@@ -1,22 +1,28 @@
 <div>
 	<article>
 	<div>
-		<button class="btn" ng-click="editArticle($item)">edit</button>
-		<button class="btn" ng-click="deleteArticle($item)">delete</button>
+		<button class="btn" ng-click="editArticle()">edit</button>
+		<!--<button class="btn" ng-click="deleteArticle($item)">delete</button>-->
 	</div>
-	<div marked="article.content">
-	</div>
+	<h2>{{article.title}}</h2>
+	<div marked="article.content"></div>
 	<div>
+		<h4>Comments</h4>
 		<form role="form">
 			<div class="form-group">
-				<input type="text" ng-model="newComment" class="form-control"/>
+				<textarea ng-model="newComment" class="form-control" placeholder="Add a comment" rows="1"></textarea>
 			</div>
-			<button type="submit" class="btn btn-primary">Add</button>
-			<button type="button" class="btn">Cancel</button>
+			<div class="form-group" ng-show="newComment">
+				<button type="submit" class="btn btn-primary">Add</button>
+				<button type="button" class="btn">Cancel</button>
+			</div>
 		</form>
-		<div ng-repeat="comment in comments">
+		<div ng-repeat="comment in article.comments">
+			<div class="pull-right">
+				<a href="">{{comment.postedBy.username}}</a> <span timeago="comment.modified"></span>
+			</div>
+			<div class="media-body" marked="comment.content"></div>
 		</div>
-		<button ng-click="loadComments()" class="btn btn-primary">Show more</button>
 	</div>
 	</article>
 </div>

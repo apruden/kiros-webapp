@@ -10,14 +10,14 @@
 
 angular.module('kirosWebApp')
 
-
-.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', 'SearchResult', function ($scope, $location, $localStorage, Articles, Comments, Accounts, SearchResult) {
+.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Articles, Comments, Accounts) {
     function addArticles (articles) {
         articles.forEach(function(a){
             $scope.newCommentsCollapsed[a.id] = true;
             $scope.newComments[a.id] = {
                 id: '',
                 targetId: a.id,
+                targetType: 'article',
                 content: '',
                 attachments:[],
                 modifiedBy: {},
@@ -27,45 +27,39 @@ angular.module('kirosWebApp')
 
     $scope.newComments = {};
     $scope.newCommentsCollapsed = {};
-    $scope.articles = angular.equals(SearchResult.current, {}) ? Articles.query(function(res) {
+    $scope.articles = Articles.query(function(res) {
         addArticles(res) ;
-    }) : SearchResult.current.articles;
+    });
 
     $scope.toggleComment = function(a) {
        $scope.newCommentsCollapsed[a.id] = !$scope.newCommentsCollapsed[a.id];
     };
 
     $scope.addComment = function(a) {
-        var me = Accounts.get();
-        a.modifiedBy = me;
-        Comments.save($scope.newComments[a.id], function(){
-            $scope.toggleComment(a);
-            $scope.newComments[a.id] = {
-                    id: '',
-                    targetId: a.id,
-                    content: '',
-                    attachments:[],
-                    modifiedBy: me,
-                    modified: new Date().toISOString()};
+        Accounts.get().$promise.then(function(me) {
+            a.modifiedBy = me;
+            $scope.newComments[a.id].modifiedBy = me;
+            Comments.save($scope.newComments[a.id], function(){
+                $scope.toggleComment(a);
+                $scope.newComments[a.id] = {
+                        id: '',
+                        targetId: a.id,
+                        targetType: 'article',
+                        content: '',
+                        attachments:[],
+                        modifiedBy: {},
+                        modified: new Date().toISOString()};
+            });
         });
     };
 
     $scope.addArticle = function() {
-        $location.path('/wiki/articles');
+        $location.path('/articles/edit');
     };
 
     $scope.editArticle = function (a) {
-        console.log('edit article');
-        $location.path('/wiki/articles/' + a.id);
+        $location.path('/articles/' + a.id + '/edit');
     };
-
-    $scope.loadComments = function(a) {
-    };
-
-    $scope.$on('searchResult', function(e, r) {
-        $scope.articles = r.articles;
-        addArticles(r.articles);
-    });
 }])
 
 .controller('ArticleEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Articles', 'Accounts',
@@ -91,8 +85,8 @@ angular.module('kirosWebApp')
         var successHandler = function (data, _status, _headers, config) {
             console.log('file ' + config.file.name + ' uploaded. Response: ' + data);
             $scope.attachments.push({
-                filename: data.fileNames[0],
-                title: config.file.name,
+                id: data.fileNames[0],
+                filename: config.file.name,
                 modified: new Date().toISOString()
             });
         };
@@ -100,6 +94,8 @@ angular.module('kirosWebApp')
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
+                console.log(file);
+
                 $upload.upload({
                     url: 'https://localhost:20001/assets',
                     file: file
@@ -132,6 +128,10 @@ angular.module('kirosWebApp')
     };
 }])
 
-.controller('ArticleCtrl',['$scope', '$routeParams', 'Articles', function($scope, $routeParams, Articles) {
+.controller('ArticleCtrl',['$scope', '$routeParams', '$location', 'Articles', function($scope, $routeParams, $location, Articles) {
     $scope.article = Articles.get({id: $routeParams.id});
+
+    $scope.editArticle = function() {
+        $location.path('/articles/' + $scope.article.id + '/edit');
+    };
 }]);

@@ -20,7 +20,6 @@
 		<!--[if lt IE 9]>
 		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
-
 		<!-- Add your site or application content here -->
 		<div class="container">
 			<div ng-controller="HeaderCtrl" class="header">
@@ -37,7 +36,7 @@
 				</ul>
 				<form class="navbar-form pull-right" ng-show="authorized" role="search" ng-submit="search()">
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Search" ng-model="q"/>
+						<input tabindex="1" type="text" class="form-control" placeholder="Search" ng-model="q"/>
 						<span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="clearSearch()"><span class="glyphicon glyphicon-remove-sign"></span></button></span>
 					</div>
 				</form>
@@ -45,7 +44,7 @@
 			</div>
 			<div ng-view=""></div>
 			<div class="footer">
-				<p><span class="glyphicon glyphicon-heart"></span> from PFS team</p>
+				<p>with <span class="glyphicon glyphicon-heart"></span> from the PFS team</p>
 			</div>
 		</div>
 		<!-- build:js(.) scripts/oldieshim.js -->
@@ -54,7 +53,6 @@
 		<script src="bower_components/json3/lib/json3.js"></script>
 		<![endif]-->
 		<!-- endbuild -->
-
 		<!-- build:js(.) scripts/vendor.js -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
@@ -80,6 +78,7 @@
 		<script src="scripts/controllers/account.js"></script>
 		<script src="scripts/controllers/wiki.js"></script>
 		<script src="scripts/controllers/report.js"></script>
+		<script src="scripts/controllers/search.js"></script>
 		<script src="scripts/directives/wiki.js"></script>
 		<script src="scripts/services/wiki.js"></script>
 		<!-- endbuild -->
