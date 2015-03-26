@@ -37,7 +37,7 @@
 		</div>
 		<div class="media" ng-repeat="comment in article.comments">
 			<div class="pull-right">
-				<a href="">{{comment.postedBy.username}}</a> <span timeago="comment.modified"></span>
+				<a href="">{{comment.modifiedBy.username | username}}</a> <span timeago="comment.modified"></span>
 			</div>
 			<div class="media-body" marked="comment.content"></div>
 		</div>
