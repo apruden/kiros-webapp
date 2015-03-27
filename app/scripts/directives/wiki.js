@@ -30,7 +30,7 @@ angular.module('kirosWebApp')
         },
         link: function(scope, elem) {
             var d = new Date(scope.timeago);
-            elem.html(Math.floor(Math.abs(new Date().getTime() - d.getTime())/1000./60./60./24.) + ' days ago');
+            elem.html(Math.floor(Math.abs(new Date().getTime() - d.getTime())/1000.0/60.0/60.0/24.0) + ' days ago');
         }
     };
 }]);

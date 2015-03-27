@@ -9,7 +9,7 @@
 		<div ng-repeat="activity in report.activities" marked="activity.content"></div>
 		<div>
 		<h4>Comments</h4>
-			<form role="form">
+			<form role="form" ng-submit="addComment()">
 				<div class="form-group">
 					<textarea type="text" ng-model="newComment" class="form-control" placeholder="Add comment"></textarea>
 				</div>
@@ -18,7 +18,12 @@
 					<button type="button" class="btn">Cancel</button>
 				</div>
 			</form>
-			<div ng-repeat="comment in comments"></div>
+			<div ng-repeat="comment in report.comments">
+				<div class="pull-right">
+					<a href="">{{comment.postedBy.username | username}}</a> <span timeago="comment.modified"></span>
+				</div>
+				<div class="media-body" marked="comment.content"></div>
+			</div>
 		</div>
 	</article>
 </div>

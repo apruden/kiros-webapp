@@ -31,21 +31,20 @@ angular.module('kirosWebApp')
         });
     }) : SearchResult.current.reports;
 
-    $scope.toggleComment = function(a) {
-       $scope.newCommentsCollapsed[a.id] = !$scope.newCommentsCollapsed[a.id];
-    };
-
     $scope.addComment = function(a) {
-        Comments.save($scope.newComments[a.id], function(){
-            $scope.toggleComment(a);
-            $scope.newComments[a.id] = {
-                    id: '',
-                    targetId: a.id,
-                    targetType: 'report',
-                    content: '',
-                    attachments:[],
-                    postedBy: me,
-                    posted: new Date().toISOString()};
+        Accounts.get().$promise.then(function(me) {
+            a.modifiedBy = me;
+            $scope.newComments[a.id].modifiedBy = me;
+            Comments.save($scope.newComments[a.id], function(){
+                $scope.newComments[a.id] = {
+                        id: '',
+                        targetId: a.id,
+                        targetType: 'report',
+                        content: '',
+                        attachments:[],
+                        postedBy: me,
+                        posted: new Date().toISOString()};
+            });
         });
     };
 
@@ -57,9 +56,6 @@ angular.module('kirosWebApp')
     $scope.editReport = function (a) {
         console.log('edit report');
         $location.path('/reports/edit/' + a.id);
-    };
-
-    $scope.loadComments = function(a) {
     };
 
     $scope.$on('searchResult', function(e, r) {
@@ -152,10 +148,29 @@ angular.module('kirosWebApp')
         $location.path('/');
     };
 }])
-.controller('ReportCtrl',['$scope', '$location', '$routeParams', 'Reports', function($scope, $location, $routeParams, Reports) {
+.controller('ReportCtrl',['$scope', '$location', '$routeParams', 'Reports', 'Accounts', 'Comments', function($scope, $location, $routeParams, Reports, Accounts, Comments) {
     $scope.report = Reports.get({id: $routeParams.id});
 
     $scope.editReport = function() {
         $location.path('/reports/' + $scope.report.id +'/edit');
+    };
+
+    $scope.addComment = function() {
+        var a = $scope.report;
+        Accounts.get().$promise.then(function(me) {
+            a.modifiedBy = me;
+            $scope.newComments[a.id].modifiedBy = me;
+            Comments.save($scope.newComments[a.id], function(){
+                $scope.newComments[a.id] = {
+                    id: '',
+                    targetId: a.id,
+                    targetType: 'report',
+                    content: '',
+                    attachments:[],
+                    postedBy: me,
+                    posted: new Date().toISOString()
+                };
+            });
+        });
     };
 }]);

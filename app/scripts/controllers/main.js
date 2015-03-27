@@ -32,7 +32,7 @@ angular.module('kirosWebApp')
       }
   });
 
-  $rootScope.$on('$routeChangeStart', function(ev, next, curr){
+  $rootScope.$on('$routeChangeStart', function(ev, next){
       if (next && next.$$route) {
           if (!$localStorage.accessToken) {
               $location.path('/login');

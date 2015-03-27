@@ -40,8 +40,9 @@ angular.module('kirosWebApp')
             },
         changePassword: {
            method: 'POST',
-           transformRequest: function(data, hg) { //TODO: needs to modify the Content-Type header
+           transformRequest: function(data) { //TODO: needs to modify the Content-Type header
                var res = [];
+
                for (var k in data) {
                    res.push(window.encodeURIComponent(k) + '=' +
                         window.encodeURIComponent(data[k]));
@@ -50,5 +51,5 @@ angular.module('kirosWebApp')
                return '&'.concat(res);
            }
         }
-        });
+    });
 }]);
