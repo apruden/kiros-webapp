@@ -12,41 +12,11 @@ angular.module('kirosWebApp')
 
 .controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Articles, Comments, Accounts) {
     function addArticles (articles) {
-        articles.forEach(function(a){
-            $scope.newCommentsCollapsed[a.id] = true;
-            $scope.newComments[a.id] = {
-                id: '',
-                targetId: a.id,
-                targetType: 'article',
-                content: '',
-                attachments:[],
-                modifiedBy: {},
-                modified: new Date().toISOString()};
-        });
     }
 
-    $scope.newComments = {};
-    $scope.newCommentsCollapsed = {};
     $scope.articles = Articles.query(function(res) {
         addArticles(res);
     });
-
-    $scope.addComment = function(a) {
-        Accounts.get().$promise.then(function(me) {
-            $scope.newComments[a.id].modifiedBy = me;
-            Comments.save($scope.newComments[a.id], function(){
-                a.comments.unshift($scope.newComments[a.id]);
-                $scope.newComments[a.id] = {
-                        id: '',
-                        targetId: a.id,
-                        targetType: 'article',
-                        content: '',
-                        attachments:[],
-                        modifiedBy: {},
-                        modified: new Date().toISOString()};
-            });
-        });
-    };
 
     $scope.addArticle = function() {
         $location.path('/articles/edit');
@@ -130,31 +100,4 @@ angular.module('kirosWebApp')
         $location.path('/articles/' + $scope.article.id + '/edit');
     };
 
-    $scope.newComment = {
-            id: '',
-            targetId: $scope.article.id,
-            targetType: 'article',
-            content: '',
-            attachments:[],
-            modifiedBy: {},
-            modified: new Date().toISOString()};
-
-    $scope.addComment = function() {
-        var a = $scope.article;
-        Accounts.get().$promise.then(function(me) {
-            $scope.newComment.targetId = a.id;
-            $scope.newComment.modifiedBy = me;
-            Comments.save($scope.newComment, function(){
-                $scope.article.comments.unshift($scope.newComment);
-                $scope.newComment = {
-                        id: '',
-                        targetId: a.id,
-                        targetType: 'article',
-                        content: '',
-                        attachments:[],
-                        modifiedBy: {},
-                        modified: new Date().toISOString()};
-            });
-        });
-    };
 }]);

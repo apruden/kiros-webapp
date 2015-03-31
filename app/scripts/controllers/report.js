@@ -25,8 +25,8 @@ angular.module('kirosWebApp')
                 targetType: 'report',
                 content: '',
                 attachments:[],
-                postedBy: me,
-                posted: new Date().toISOString()};
+                modifiedBy: me,
+                modified: new Date().toISOString()};
             $scope.comments[a.id] = [];
         });
     }) : SearchResult.current.reports;
@@ -42,8 +42,8 @@ angular.module('kirosWebApp')
                         targetType: 'report',
                         content: '',
                         attachments:[],
-                        postedBy: me,
-                        posted: new Date().toISOString()};
+                        modifiedBy: me,
+                        modified: new Date().toISOString()};
             });
         });
     };
@@ -167,8 +167,8 @@ angular.module('kirosWebApp')
                     targetType: 'report',
                     content: '',
                     attachments:[],
-                    postedBy: me,
-                    posted: new Date().toISOString()
+                    modifiedBy: me,
+                    modified: new Date().toISOString()
                 };
             });
         });

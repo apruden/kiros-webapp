@@ -5,6 +5,7 @@ angular.module('kirosWebApp')
       $scope.articles = [];
       $scope.reports = [];
       $scope.hasResults = true;
+      $scope.q = $location.search().query;
 
       if ($location.search().query) {
           Search.get({query: $location.search().query}, function(r) {

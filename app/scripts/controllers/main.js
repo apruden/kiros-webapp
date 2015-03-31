@@ -45,4 +45,8 @@ angular.module('kirosWebApp')
   $scope.search = function() {
       $location.path('/search').search('query', $scope.q);
   };
+
+  $scope.clearSearch = function() {
+      $scope.q = '';
+  };
 }]);
