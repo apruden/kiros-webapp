@@ -8,33 +8,33 @@ angular.module('kirosWebApp')
         self.current = c;
     };
 })
-.factory('Search', ['$resource', function($resource){
+.factory('Search', ['$resource', 'kirosConfig', function($resource, kirosConfig){
     return $resource(
-        'https://localhost:20001/search');
+        kirosConfig.prime + '/search');
 }])
-.factory('Articles', ['$resource', function($resource){
+.factory('Articles', ['$resource', 'kirosConfig', function($resource, kirosConfig){
     return $resource(
-        'https://localhost:20001/articles/:id',
+        kirosConfig.prime + '/articles/:id',
         {id: '@articleId',
          limit: '@limit' || 20,
          offset: '@offset' || 0 });
 }])
 
-.factory('Reports', ['$resource', function($resource){
+.factory('Reports', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
     return $resource(
-        'https://localhost:20001/reports/:id',
+        kirosConfig.prime + '/reports/:id',
         {id: '@reportId',
             limit: '@limit' || 20,
            offset: '@offset' || 0 });
 }])
 
-.factory('Comments', ['$resource', function($resource){
+.factory('Comments', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
     return $resource(
-        'https://localhost:20001/comments', {});
+         kirosConfig.prime + '/comments', {});
 }])
 
-.factory('Accounts', ['$resource', function($resource) {
-    return $resource('https://localhost:20000/me',{}, {
+.factory('Accounts', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
+    return $resource(kirosConfig.auth + '/me',{}, {
         get: {
                 method: 'GET'
             },

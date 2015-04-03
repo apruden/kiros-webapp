@@ -63,8 +63,8 @@ angular.module('kirosWebApp')
     });
 }])
 
-.controller('ReportEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Reports', 'Accounts',
-        function($scope, $location, $routeParams, $upload, Reports, Accounts) {
+.controller('ReportEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Reports', 'Accounts', 'kirosConfig',
+        function($scope, $location, $routeParams, $upload, Reports, Accounts, kirosConfig) {
 
     var me = Accounts.get();
     $scope.report = $routeParams.id ? Reports.get({id: $routeParams.id}) : {
@@ -116,7 +116,7 @@ angular.module('kirosWebApp')
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
                 $upload.upload({
-                    url: 'https://localhost:20001/assets',
+                    url: kirosConfig.prime + '/assets',
                     file: file
                 })
                 .progress(progressHandler)

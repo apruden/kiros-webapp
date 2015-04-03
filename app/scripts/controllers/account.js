@@ -2,7 +2,7 @@
 
 angular.module('kirosWebApp')
 
-.controller('AccountCtrl', ['$scope', '$rootScope', '$location', '$localStorage', '$http', 'Accounts', function($scope, $rootScope, $location, $localStorage, $http, Accounts) {
+.controller('AccountCtrl', ['$scope', '$rootScope', '$location', '$localStorage', '$http', 'Accounts', 'kirosConfig', function($scope, $rootScope, $location, $localStorage, $http, Accounts, kirosConfig) {
 
     if ($location.path() === '/logout') {
         delete $localStorage.accessToken;
@@ -15,7 +15,7 @@ angular.module('kirosWebApp')
     $scope.error = '';
 
     $scope.login = function () {
-        $http.post('https://localhost:20000/token', {
+        $http.post(kirosConfig.auth + '/token', {
             grant_type : 'password',
             scope: 'prime auth',
             username: $scope.username,
@@ -51,7 +51,7 @@ angular.module('kirosWebApp')
     };
 }])
 
-.controller('AccountSettingsCtrl', ['$scope', '$location', '$http', function($scope, $location, $http) {
+.controller('AccountSettingsCtrl', ['$scope', '$location', '$http', 'kirosConfig', function($scope, $location, $http, kirosConfig) {
     $scope.messages = [];
     $scope.oldpass = '';
     $scope.newpass = '';
@@ -59,7 +59,7 @@ angular.module('kirosWebApp')
 
     $scope.changePass = function() {
         $http.post(
-            'https://localhost:20000/me', {
+            kirosConfig.auth + '/me', {
                 oldPassword: $scope.oldpass,
                 newPassword: $scope.newpass
             }, {

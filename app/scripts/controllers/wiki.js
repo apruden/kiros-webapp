@@ -27,8 +27,8 @@ angular.module('kirosWebApp')
     };
 }])
 
-.controller('ArticleEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Articles', 'Accounts',
-        function($scope, $location, $routeParams, $upload, Articles, Accounts) {
+.controller('ArticleEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Articles', 'Accounts', 'kirosConfig',
+        function($scope, $location, $routeParams, $upload, Articles, Accounts, kirosConfig) {
     var me = Accounts.get();
     $scope.article = $routeParams.id ? Articles.get({id: $routeParams.id}) : {
         id: '',
@@ -62,7 +62,7 @@ angular.module('kirosWebApp')
                 console.log(file);
 
                 $upload.upload({
-                    url: 'https://localhost:20001/assets',
+                    url: kirosConfig.prime + '/assets',
                     file: file
                 })
                 .progress(progressHandler)
