@@ -1,6 +1,5 @@
 /* Space out content a bit */
 body {
-  padding-top: 20px;
   padding-bottom: 20px;
 }
 
@@ -89,4 +88,23 @@ body {
 }
 .dragover {
     border: 5px dashed blue;
+}
+
+.comments {
+    padding-top: 1.2em;
+}
+
+#loading-bar .bar {
+  background: #FF9900;
+  height: 5px;
+}
+
+#loading-bar-spinner .spinner-icon {
+  width: 20px;
+  height: 20px;
+
+  border:  solid 2px transparent;
+  border-top-color:  #FF9900;
+  border-left-color: #FF9900;
+  border-radius: 16px;
 }

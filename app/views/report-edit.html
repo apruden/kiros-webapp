@@ -8,16 +8,19 @@
 			<div class="pull-right">
 			<button type="button" class="btn btn-default" ng-click="removeActivity(activity)">remove</button></div>
 			<label>Activity </label>
-			<textarea rows="2" ng-model="activity.content" class="form-control"></textarea>
+			<textarea rows="2" ng-model="activity.content" class="form-control" placeholder="Add an activity ..."></textarea>
 			<label>Duration</label>
 			<input type="number" step="0.5" min="0" max="8" ng-model="activity.duration" class="form-control"/>
 		</div>
 		<div class="form-group">
-			<button type="button" ng-click="addActivity()" class="btn btn-default">Add activity</button>
+			<button type="button" ng-click="addActivity()" class="btn btn-primary">Add activity</button>
 		</div>
 		<div ng-repeat="blocker in report.blockers" class="form-group">
-			<label class="alert alert-danger">Blocker<a href="" ng-click="removeBlocker(blocker)">remove</a></label>
-			<textarea rows="2" ng-model="blocker.content" class="form-control alert alert-danger"></textarea>
+			<div class="pull-right">
+				<a href="" ng-click="removeBlocker(blocker)" class="btn btn-default">remove</a>
+			</div>
+			<label><span class="text-danger">Blocker</span></label>
+			<textarea rows="2" ng-model="blocker.content" class="form-control" placeholder="Add a blocker ..."></textarea>
 		</div>
 		<div class="form-group">
 			<button type="button" ng-click="addBlocker()" class="btn btn-danger">Add blocker</button>
@@ -28,7 +31,7 @@
 				<li>{{att.title}} <a href ng-click="removeAttachment(att)">remove</a></li>
 			</ul>
 		</div>
-		<button type="submit" class="btn btn-primary">Add</button>
+		<button type="submit" class="btn btn-primary btn-raised">Save</button>
 		<button type="button" class="btn" ng-click="cancel()">Cancel</button>
 	</form>
 	<div>

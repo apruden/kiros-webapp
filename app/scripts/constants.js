@@ -3,6 +3,6 @@
 angular.module('kirosWebApp')
 
 .constant('kirosConfig', {
-        auth: 'http://intra.primefactorsolutions.com:20000',
-        prime: 'http://intra.primefactorsolutions.com:20001'
+        auth: 'http://kirosauth-pfs.rhcloud.com',
+        prime: 'http://kirosprime-pfs.rhcloud.com'
 });

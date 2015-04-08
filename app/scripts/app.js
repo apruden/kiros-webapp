@@ -20,7 +20,8 @@ angular
     'ngTouch',
     'ngStorage',
     'angularFileUpload',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'angular-loading-bar'
 ])
 
 .config(function ($routeProvider, $httpProvider, $locationProvider) {
