@@ -16,6 +16,10 @@ angular.module('kirosWebApp')
     $scope.comments = {};
     $scope.newCommentsCollapsed = {};
 
+    $scope.total = function(report) {
+        return report.activities.reduce(function(x, y) {return x + y.duration;}, 0);
+    };
+
     $scope.reports = angular.equals({}, SearchResult.current) ? Reports.query(function(res) {
         res.forEach(function(a){
             $scope.newCommentsCollapsed[a.id] = true;
@@ -95,6 +99,15 @@ angular.module('kirosWebApp')
         $scope.report.blockers.splice(idx, 1);
     };
 
+    $scope.opened = false;
+
+    $scope.toggleOpened = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
+    };
+
     $scope.attachments = [];
 
     $scope.upload = function (files) {
@@ -140,19 +153,40 @@ angular.module('kirosWebApp')
         $scope.report.attachments = $scope.attachments;
         $scope.report.comments = $scope.report.comments || [];
         console.log(JSON.stringify($scope.report));
-        Reports.save($scope.report);
-        //$location.path('/');
+        Reports.save($scope.report).$promise.then(function() {
+            $location.path('/reports');
+        });
     };
 
     $scope.cancel = function() {
-        $location.path('/');
+        $location.path('/reports');
     };
+
+    $scope.open = function($event, report) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        report.opened = true;
+    };
+
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        startingDay: 1
+    };
+
+    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    $scope.format = $scope.formats[0];
 }])
+
 .controller('ReportCtrl',['$scope', '$location', '$routeParams', 'Reports', 'Accounts', 'Comments', function($scope, $location, $routeParams, Reports, Accounts, Comments) {
     $scope.report = Reports.get({id: $routeParams.id});
 
     $scope.editReport = function() {
         $location.path('/reports/' + $scope.report.id +'/edit');
+    };
+
+    $scope.total = function() {
+        return $scope.report.activities.reduce(function(x, y) {return x + y.duration;}, 0);
     };
 
     $scope.addComment = function() {

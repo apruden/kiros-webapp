@@ -2,15 +2,31 @@
 	<form role="form" ng-submit="saveReport()">
 		<div class="form-group">
 			<label>Date</label>
-			<datepicker ng-model="report.date" class="well well-sm"/>
+			<div>
+				<div class="row">
+					<div class="col-md-6">
+						<p class="input-group">
+						<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="report.date" is-open="report.opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-click="open($event, report)"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
+						</p>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div ng-repeat="activity in report.activities" class="form-group">
 			<div class="pull-right">
-			<button type="button" class="btn btn-default" ng-click="removeActivity(activity)">remove</button></div>
-			<label>Activity </label>
-			<textarea rows="2" ng-model="activity.content" class="form-control" placeholder="Add an activity ..."></textarea>
-			<label>Duration</label>
-			<input type="number" step="0.5" min="0" max="8" ng-model="activity.duration" class="form-control"/>
+				<button type="button" class="btn btn-default" ng-click="removeActivity(activity)">remove</button>
+			</div>
+			<div class="form-group">
+				<label>Activity </label>
+				<textarea rows="2" ng-model="activity.content" class="form-control" placeholder="Add an activity ..."></textarea>
+			</div>
+			<div class="form-group" ng-show="activity.content">
+				<label>Duration</label>
+				<input type="number" step="0.5" min="0" max="8" ng-model="activity.duration" class="form-control"/>
+			</div>
 		</div>
 		<div class="form-group">
 			<button type="button" ng-click="addActivity()" class="btn btn-primary">Add activity</button>
@@ -26,9 +42,9 @@
 			<button type="button" ng-click="addBlocker()" class="btn btn-danger">Add blocker</button>
 		</div>
 		<div class="form-group">
-			<div class="button" ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">Select File</div>
+			<div class="button" ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">Attach File</div>
 			<ul ng-repeat="att in attachments">
-				<li>{{att.title}} <a href ng-click="removeAttachment(att)">remove</a></li>
+				<li>{{att.filename}} <a href ng-click="removeAttachment(att)">remove</a></li>
 			</ul>
 		</div>
 		<button type="submit" class="btn btn-primary btn-raised">Save</button>

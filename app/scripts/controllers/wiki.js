@@ -84,8 +84,9 @@ angular.module('kirosWebApp')
         $scope.article.modified = new Date().toISOString();
         $scope.article.modifiedBy = me;
         $scope.article.attachments = $scope.attachments;
-        Articles.save($scope.article);
-        $location.path('/');
+        Articles.save($scope.article).$promise.then(function() {
+            $location.path('/');
+        });
     };
 
     $scope.cancel = function() {

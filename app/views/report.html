@@ -6,7 +6,17 @@
 			<!--<button class="btn" ng-click="deleteReport($item)">delete</button>-->
 		</div>
 		<h2>{{report.modifiedBy.username | username}} - {{report.modified | sdate}}</h2>
-		<div ng-repeat="activity in report.activities" marked="activity.content"></div>
+		<div ng-repeat="blocker in report.blockers" marked="blocker.content" class="alert alert-danger"></div>
+		<br/>
+		<div ng-repeat="activity in report.activities">
+			<span class="pull-left" style="width: 3em;">{{activity.duration}} hr</span>
+			<div marked="activity.content"></div>
+		</div>
+		<div>
+			<p>
+			Total: <span class="label label-default" style="width: 3em;">{{total()}} hr</span>
+			</p>
+		</div>
 		<comments comments="report.comments" target-id="report.id" target-type="report"/>
 	</article>
 </div>
