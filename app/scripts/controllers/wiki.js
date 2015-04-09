@@ -27,8 +27,8 @@ angular.module('kirosWebApp')
     };
 }])
 
-.controller('ArticleEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Articles', 'Accounts', 'kirosConfig',
-        function($scope, $location, $routeParams, $upload, Articles, Accounts, kirosConfig) {
+.controller('ArticleEditCtrl',['$timeout', '$scope', '$location', '$routeParams', '$upload', 'Articles', 'Accounts', 'kirosConfig',
+        function($timeout, $scope, $location, $routeParams, $upload, Articles, Accounts, kirosConfig) {
     var me = Accounts.get();
     $scope.article = $routeParams.id ? Articles.get({id: $routeParams.id}) : {
         id: '',
@@ -85,7 +85,9 @@ angular.module('kirosWebApp')
         $scope.article.modifiedBy = me;
         $scope.article.attachments = $scope.attachments;
         Articles.save($scope.article).$promise.then(function() {
-            $location.path('/');
+            $timeout(function() {
+                $location.path('/');
+            }, 1000);
         });
     };
 

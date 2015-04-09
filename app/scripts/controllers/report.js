@@ -58,8 +58,8 @@ angular.module('kirosWebApp')
     };
 
     $scope.editReport = function (a) {
-        console.log('edit report');
-        $location.path('/reports/edit/' + a.id);
+        console.log('edit report ' + a.id);
+        $location.path('/reports/' + a.id + '/edit');
     };
 
     $scope.$on('searchResult', function(e, r) {
@@ -67,8 +67,8 @@ angular.module('kirosWebApp')
     });
 }])
 
-.controller('ReportEditCtrl',['$scope', '$location', '$routeParams', '$upload', 'Reports', 'Accounts', 'kirosConfig',
-        function($scope, $location, $routeParams, $upload, Reports, Accounts, kirosConfig) {
+.controller('ReportEditCtrl',['$timeout', '$scope', '$location', '$routeParams', '$upload', 'Reports', 'Accounts', 'kirosConfig',
+        function($timeout, $scope, $location, $routeParams, $upload, Reports, Accounts, kirosConfig) {
 
     var me = Accounts.get();
     $scope.report = $routeParams.id ? Reports.get({id: $routeParams.id}) : {
@@ -154,7 +154,9 @@ angular.module('kirosWebApp')
         $scope.report.comments = $scope.report.comments || [];
         console.log(JSON.stringify($scope.report));
         Reports.save($scope.report).$promise.then(function() {
-            $location.path('/reports');
+            $timeout(function() {
+                $location.path('/reports');
+            }, 1000);
         });
     };
 
