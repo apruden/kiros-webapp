@@ -5,7 +5,8 @@
 			<!-- TODO: when permissions are implemented -->
 			<!--<button class="btn" ng-click="deleteReport($item)">delete</button>-->
 		</div>
-		<h2>{{report.modifiedBy.username | username}} - {{report.modified | sdate}}</h2>
+		<h2>{{report.modifiedBy.username | username}} - {{report.client}} - {{report.team}}</h2>
+		<div>{{report.modified | sdate}}</div>
 		<div ng-repeat="blocker in report.blockers" marked="blocker.content" class="alert alert-danger"></div>
 		<br/>
 		<div ng-repeat="activity in report.activities">
@@ -14,7 +15,7 @@
 		</div>
 		<div>
 			<p>
-			Total: <span class="label label-default" style="width: 3em;">{{total()}} hr</span>
+			Total: <span class="label label-default" style="width: 3em;">{{total}} hr</span>
 			</p>
 		</div>
 		<comments comments="report.comments" target-id="report.id" target-type="report"/>

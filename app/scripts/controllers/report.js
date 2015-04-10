@@ -181,14 +181,14 @@ angular.module('kirosWebApp')
 }])
 
 .controller('ReportCtrl',['$scope', '$location', '$routeParams', 'Reports', 'Accounts', 'Comments', function($scope, $location, $routeParams, Reports, Accounts, Comments) {
+    $scope.total = 0;
     $scope.report = Reports.get({id: $routeParams.id});
+    $scope.report.$promise.then(function(res) {
+        $scope.total = res.activities ? res.activities.reduce(function(x, y) { return x + y.duration; }, 0) : 0;
+    });
 
     $scope.editReport = function() {
         $location.path('/reports/' + $scope.report.id +'/edit');
-    };
-
-    $scope.total = function() {
-        return $scope.report.activities.reduce(function(x, y) {return x + y.duration;}, 0);
     };
 
     $scope.addComment = function() {
