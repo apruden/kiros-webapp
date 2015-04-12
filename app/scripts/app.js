@@ -130,4 +130,19 @@ angular
     return function(t) {
         return new Date(Date.parse(t)).toDateString();
     };
-});
+})
+
+.directive('focusable', [function() {
+    return {
+        restrict: 'A',
+        scope: {
+            msg: '&'
+        },
+        link: function(scope, elem, attr) {
+            scope.$on(attr.msg, function() {
+                elem.focus();
+            });
+        }
+    };
+}])
+;

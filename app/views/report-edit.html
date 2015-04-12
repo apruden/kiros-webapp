@@ -25,11 +25,11 @@
 		</div>
 		<div ng-repeat="activity in report.activities" class="form-group">
 			<div class="pull-right">
-				<button type="button" class="btn btn-default" ng-click="removeActivity(activity)">remove</button>
+				<button type="button" tabindex="-1" class="btn btn-default" ng-click="removeActivity(activity)">remove</button>
 			</div>
 			<div class="form-group">
 				<label>Activity </label>
-				<textarea rows="2" ng-model="activity.content" class="form-control" placeholder="Add an activity ..."></textarea>
+				<textarea rows="2" ng-model="activity.content" class="form-control" placeholder="Add an activity ..." focusable msg="activityAdded"></textarea>
 			</div>
 			<div class="form-group" ng-show="activity.content">
 				<label>Duration</label>
@@ -37,30 +37,31 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<a href="" type="button" ng-click="addActivity()" class="btn btn-flat btn-primary">Add activity</a>
+			<a href="" type="button" ng-click="addActivity()" class="btn btn-flat btn-primary btn-link">Add activity</a>
 		</div>
 		<div ng-repeat="blocker in report.blockers" class="form-group">
 			<div class="pull-right">
-				<a href="" ng-click="removeBlocker(blocker)" class="btn btn-default">remove</a>
+				<a href="" tabindex="-1" ng-click="removeBlocker(blocker)" class="btn btn-default">remove</a>
 			</div>
 			<label><span class="text-danger">Blocker</span></label>
-			<textarea rows="2" ng-model="blocker.content" class="form-control" placeholder="Add a blocker ..."></textarea>
+			<textarea rows="2" ng-model="blocker.content" class="form-control" placeholder="Add a blocker ..." focusable msg="blockerAdded"></textarea>
 		</div>
 		<div class="form-group">
-			<a href="" type="button" ng-click="addBlocker()" class="btn btn-flat btn-danger">Add blocker</a>
+			<a href="" type="button" ng-click="addBlocker()" class="btn btn-flat btn-danger btn-link">Add blocker</a>
 		</div>
 		<div class="form-group">
 			<div ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">
-				<a href="" class="btn btn-default">Attach File</a>
+				<a href="" class="btn btn-default btn-link">Attach File</a>
 			</div>
-			<ul ng-repeat="att in attachments" class="list-unstyled">
-				<li>{{att.filename}} <a href="" ng-click="removeAttachment(att)">Remove</a></li>
-			</ul>
-			<div class="progress" ng-repeat="prog in progresses">
-				<div class="progress-bar" role="progressbar" aria-valuenow="{{prog.percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{prog.percent}}%;">
-					{{prog.percent}}%
+			<ul ng-repeat="att in report.attachments" class="list-unstyled">
+				<li>{{att.filename}} <a href="" ng-click="removeAttachment(att)">Remove</a>
+				<div class="progress" ng-show="att.percent < 100">
+					<div class="progress-bar" role="progressbar" aria-valuenow="{{att.percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{att.percent}}%;">
+						{{att.percent}}%
+					</div>
 				</div>
-			</div>
+				</li>
+			</ul>
 		</div>
 		<button type="submit" class="btn btn-primary btn-raised" ng-disabled="progresses.length" >Save</button>
 		<button type="button" class="btn" ng-click="cancel()">Cancel</button>

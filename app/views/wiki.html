@@ -1,8 +1,8 @@
 <div>
 	<button class="btn btn-primary" ng-click="addArticle()">Add article</button>
-	<article ng-repeat="article in articles">
+	<article ng-repeat="article in articles" ng-mouseover="showActions(article)" ng-mouseout="hideActions(article)">
 		<div>
-			<div class="btn-group pull-right" dropdown>
+			<div class="btn-group pull-right" dropdown ng-show="article.showActions">
 				<button type="button" class="btn btn-default btn-flat dropdown-toggle" dropdown-toggle> Actions <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu" role="menu">

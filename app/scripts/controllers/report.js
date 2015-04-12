@@ -9,46 +9,22 @@
 
 angular.module('kirosWebApp')
 
-.controller('ReportsCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Accounts', 'SearchResult',function ($scope, $location, $localStorage, Reports, Comments, Accounts, SearchResult) {
+.controller('ReportsCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Reports, Comments, Accounts) {
     var me = Accounts.get();
 
-    $scope.newComments = {};
-    $scope.comments = {};
+    $scope.showActions = function(a) {
+        a.showActions = true;
+    };
+
+    $scope.hideActions = function(a) {
+        a.showActions = false;
+    };
 
     $scope.total = function(report) {
         return report.activities.reduce(function(x, y) {return x + y.duration;}, 0);
     };
 
-    $scope.reports = angular.equals({}, SearchResult.current) ? Reports.query(function(res) {
-        res.forEach(function(a){
-            $scope.newComments[a.id] = {
-                id: '',
-                targetId: a.id,
-                targetType: 'report',
-                content: '',
-                attachments:[],
-                modifiedBy: me,
-                modified: new Date().toISOString()};
-            $scope.comments[a.id] = [];
-        });
-    }) : SearchResult.current.reports;
-
-    $scope.addComment = function(a) {
-        Accounts.get().$promise.then(function(me) {
-            a.modifiedBy = me;
-            $scope.newComments[a.id].modifiedBy = me;
-            Comments.save($scope.newComments[a.id], function(){
-                $scope.newComments[a.id] = {
-                        id: '',
-                        targetId: a.id,
-                        targetType: 'report',
-                        content: '',
-                        attachments:[],
-                        modifiedBy: me,
-                        modified: new Date().toISOString()};
-            });
-        });
-    };
+    $scope.reports = Reports.query();
 
     $scope.addReport = function() {
         console.log('edit report');
@@ -59,16 +35,12 @@ angular.module('kirosWebApp')
         console.log('edit report ' + a.id);
         $location.path('/reports/' + a.id + '/edit');
     };
-
-    $scope.$on('searchResult', function(e, r) {
-        $scope.reports = r.reports;
-    });
 }])
 
-.controller('ReportEditCtrl',['$timeout', '$scope', '$location', '$routeParams', '$upload', 'Reports', 'Accounts', 'kirosConfig',
-        function($timeout, $scope, $location, $routeParams, $upload, Reports, Accounts, kirosConfig) {
-
+.controller('ReportEditCtrl',['$timeout', '$rootScope', '$scope', '$location', '$routeParams', '$upload', 'Reports', 'Accounts', 'kirosConfig',
+        function($timeout, $rootScope,  $scope, $location, $routeParams, $upload, Reports, Accounts, kirosConfig) {
     var me = Accounts.get();
+    $scope.opened = false;
     $scope.report = $routeParams.id ? Reports.get({id: $routeParams.id}) : {
         id: '',
         date: new Date().toISOString(),
@@ -81,10 +53,16 @@ angular.module('kirosWebApp')
 
     $scope.addActivity = function() {
         $scope.report.activities.push({content: '', duration:0});
+        $timeout(function() {
+            $rootScope.$broadcast('activityAdded');
+        }, 0);
     };
 
     $scope.addBlocker = function() {
         $scope.report.blockers.push({content: ''});
+        $timeout(function() {
+            $rootScope.$broadcast('blockerAdded');
+        }, 0);
     };
 
     $scope.removeActivity = function(a) {
@@ -97,7 +75,6 @@ angular.module('kirosWebApp')
         $scope.report.blockers.splice(idx, 1);
     };
 
-    $scope.opened = false;
 
     $scope.toggleOpened = function($event) {
         $event.preventDefault();
@@ -106,50 +83,35 @@ angular.module('kirosWebApp')
         $scope.opened = true;
     };
 
-    $scope.attachments = [];
-    $scope.progresses = [];
-    $scope.progressesDict = {};
-
     $scope.upload = function (files) {
-        var progressHandler = function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            $scope.progressesDict[evt.config.file.name].percent = progressPercentage;
-        };
+        files.forEach(function(file) {
+            var pObj = {percent: 1, filename: file.name, pending: true};
 
-        var successHandler = function (data, _status, _headers, config) {
-            var pObj, pIdx;
-            $scope.attachments.push({
-                id: data.fileNames[0],
-                filename: config.file.name,
-                modified: new Date().toISOString()
-            });
+            var progressHandler = function (evt) {
+                pObj.percent = parseInt(100.0 * evt.loaded / evt.total);
+            };
 
-            pObj = $scope.progressesDict[config.file.name];
-            pIdx = $scope.progresses.indexOf(pObj);
-            $scope.progresses.splice(pIdx, 1);
-        };
+            var successHandler = function (data, _status, _headers, config) {
+                angular.extend(pObj, {
+                    id: data.fileNames[0],
+                    modified: new Date().toISOString()
+                });
+            };
 
-        if (files && files.length) {
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i],
-                    progObj = {name: file.name, percent: 0};
-                $scope.progresses.push(progObj);
-                $scope.progressesDict[file.name] = progObj;
-
-                $upload.upload({
-                    url: kirosConfig.prime + '/assets',
-                    file: file
-                })
-                .progress(progressHandler)
-                .success(successHandler);
-            }
-        }
+            $scope.report.attachments.push(pObj);
+            $upload.upload({
+                url: kirosConfig.prime + '/assets',
+                file: file
+            })
+            .progress(progressHandler)
+            .success(successHandler);
+        });
     };
 
     $scope.removeAttachment = function(att) {
-        for(var i = $scope.attachments.length; i--;) {
-            if ($scope.attachments[i] === att) {
-                $scope.attachments.splice(i, 1);
+        for(var i = $scope.report.attachments.length; i--;) {
+            if ($scope.report.attachments[i] === att) {
+                $scope.report.attachments.splice(i, 1);
                 break;
             }
         }
@@ -158,7 +120,6 @@ angular.module('kirosWebApp')
     $scope.saveReport = function() {
         $scope.report.modified = new Date().toISOString();
         $scope.report.modifiedBy = me;
-        $scope.report.attachments = $scope.attachments;
         $scope.report.comments = $scope.report.comments || [];
         Reports.save($scope.report).$promise.then(function() {
             $timeout(function() {

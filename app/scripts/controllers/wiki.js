@@ -11,12 +11,15 @@
 angular.module('kirosWebApp')
 
 .controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Articles, Comments, Accounts) {
-    function addArticles (articles) {
-    }
+    $scope.articles = Articles.query();
 
-    $scope.articles = Articles.query(function(res) {
-        addArticles(res);
-    });
+    $scope.showActions = function(a) {
+        a.showActions = true;
+    };
+
+    $scope.hideActions = function(a) {
+        a.showActions = false;
+    };
 
     $scope.addArticle = function() {
         $location.path('/articles/edit');
@@ -39,50 +42,35 @@ angular.module('kirosWebApp')
         attachments: []
     };
 
-    $scope.attachments = [];
-    $scope.progresses = [];
-    $scope.progressesDict = {};
-
     $scope.upload = function (files) {
-        var progressHandler = function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            $scope.progressesDict[evt.config.file.name].percent = progressPercentage;
-        };
+        files.forEach(function(file) {
+            var pObj = {percent: 1, filename: file.name, pending: true};
 
-        var successHandler = function (data, _status, _headers, config) {
-            var pObj, pIdx;
-            $scope.attachments.push({
-                id: data.fileNames[0],
-                filename: config.file.name,
-                modified: new Date().toISOString()
-            });
+            var progressHandler = function (evt) {
+                pObj.percent = parseInt(100.0 * evt.loaded / evt.total);
+            };
 
-            pObj = $scope.progressesDict[config.file.name];
-            pIdx = $scope.progresses.indexOf(pObj);
-            $scope.progresses.splice(pIdx, 1);
-        };
+            var successHandler = function (data, _status, _headers, config) {
+                angular.extend(pObj, {
+                    id: data.fileNames[0],
+                    modified: new Date().toISOString()
+                });
+            };
 
-        if (files && files.length) {
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i],
-                    progObj = {name: file.name, percent: 0};
-                $scope.progresses.push(progObj);
-                $scope.progressesDict[file.name] = progObj;
-
-                $upload.upload({
-                    url: kirosConfig.prime + '/assets',
-                    file: file
-                })
-                .progress(progressHandler)
-                .success(successHandler);
-            }
-        }
+            $scope.article.attachments.push(pObj);
+            $upload.upload({
+                url: kirosConfig.prime + '/assets',
+                file: file
+            })
+            .progress(progressHandler)
+            .success(successHandler);
+        });
     };
 
     $scope.removeAttachment = function(att) {
-        for(var i = $scope.attachments.length; i--;) {
-            if ($scope.attachments[i] === att) {
-                $scope.attachments.splice(i, 1);
+        for(var i = $scope.article.attachments.length; i--;) {
+            if ($scope.article.attachments[i] === att) {
+                $scope.article.attachments.splice(i, 1);
                 break;
             }
         }
@@ -91,7 +79,6 @@ angular.module('kirosWebApp')
     $scope.saveArticle = function() {
         $scope.article.modified = new Date().toISOString();
         $scope.article.modifiedBy = me;
-        $scope.article.attachments = $scope.attachments;
         Articles.save($scope.article).$promise.then(function() {
             $timeout(function() {
                 $location.path('/');
