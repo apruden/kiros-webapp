@@ -16,9 +16,20 @@ angular.module('kirosWebApp')
       $localStorage.accessToken = $location.search().access_token;
   }
 
+
 }])
 
-.controller('HeaderCtrl', ['$scope', '$rootScope', '$location', '$localStorage', function($scope, $rootScope, $location, $localStorage) {
+.controller('ModalErrorCtrl', ['$scope', '$modalInstance', '$log','rejection', function($scope, $modalInstance, $log, rejection) {
+    $scope.rejection = angular.copy(rejection, {});
+    $log.error('Error in $http request: ', JSON.stringify($scope.rejection.config));
+    delete $scope.rejection.config;
+
+    $scope.ok = function() {
+        $modalInstance.dismiss('ok');
+    };
+}])
+
+.controller('HeaderCtrl', ['$scope', '$rootScope', '$location', '$localStorage', '$modal', function($scope, $rootScope, $location, $localStorage, $modal) {
   $scope.authorized = $localStorage.accessToken ? true : false;
   $scope.username = $localStorage.user ? $localStorage.user.username : '';
 
@@ -38,6 +49,18 @@ angular.module('kirosWebApp')
               $location.path('/login');
           }
       }
+  });
+
+  $rootScope.$on('error', function(ev, rejection) {
+      $modal.open({
+          templateUrl: 'views/error.html',
+          controller: 'ModalErrorCtrl',
+          resolve: {
+              rejection: function () {
+                  return rejection;
+              }
+          }
+      });
   });
 
   $scope.q = '';

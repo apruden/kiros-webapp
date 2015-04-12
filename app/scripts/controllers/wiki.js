@@ -40,26 +40,34 @@ angular.module('kirosWebApp')
     };
 
     $scope.attachments = [];
+    $scope.progresses = [];
+    $scope.progressesDict = {};
 
     $scope.upload = function (files) {
         var progressHandler = function (evt) {
             var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+            $scope.progressesDict[evt.config.file.name].percent = progressPercentage;
         };
 
         var successHandler = function (data, _status, _headers, config) {
-            console.log('file ' + config.file.name + ' uploaded. Response: ' + data);
+            var pObj, pIdx;
             $scope.attachments.push({
                 id: data.fileNames[0],
                 filename: config.file.name,
                 modified: new Date().toISOString()
             });
+
+            pObj = $scope.progressesDict[config.file.name];
+            pIdx = $scope.progresses.indexOf(pObj);
+            $scope.progresses.splice(pIdx, 1);
         };
 
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                console.log(file);
+                var file = files[i],
+                    progObj = {name: file.name, percent: 0};
+                $scope.progresses.push(progObj);
+                $scope.progressesDict[file.name] = progObj;
 
                 $upload.upload({
                     url: kirosConfig.prime + '/assets',

@@ -14,7 +14,6 @@ angular.module('kirosWebApp')
 
     $scope.newComments = {};
     $scope.comments = {};
-    $scope.newCommentsCollapsed = {};
 
     $scope.total = function(report) {
         return report.activities.reduce(function(x, y) {return x + y.duration;}, 0);
@@ -22,7 +21,6 @@ angular.module('kirosWebApp')
 
     $scope.reports = angular.equals({}, SearchResult.current) ? Reports.query(function(res) {
         res.forEach(function(a){
-            $scope.newCommentsCollapsed[a.id] = true;
             $scope.newComments[a.id] = {
                 id: '',
                 targetId: a.id,
@@ -109,25 +107,35 @@ angular.module('kirosWebApp')
     };
 
     $scope.attachments = [];
+    $scope.progresses = [];
+    $scope.progressesDict = {};
 
     $scope.upload = function (files) {
         var progressHandler = function (evt) {
             var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+            $scope.progressesDict[evt.config.file.name].percent = progressPercentage;
         };
 
         var successHandler = function (data, _status, _headers, config) {
-            console.log('file ' + config.file.name + ' uploaded. Response: ' + data);
+            var pObj, pIdx;
             $scope.attachments.push({
                 id: data.fileNames[0],
                 filename: config.file.name,
                 modified: new Date().toISOString()
             });
+
+            pObj = $scope.progressesDict[config.file.name];
+            pIdx = $scope.progresses.indexOf(pObj);
+            $scope.progresses.splice(pIdx, 1);
         };
 
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
-                var file = files[i];
+                var file = files[i],
+                    progObj = {name: file.name, percent: 0};
+                $scope.progresses.push(progObj);
+                $scope.progressesDict[file.name] = progObj;
+
                 $upload.upload({
                     url: kirosConfig.prime + '/assets',
                     file: file
@@ -152,7 +160,6 @@ angular.module('kirosWebApp')
         $scope.report.modifiedBy = me;
         $scope.report.attachments = $scope.attachments;
         $scope.report.comments = $scope.report.comments || [];
-        console.log(JSON.stringify($scope.report));
         Reports.save($scope.report).$promise.then(function() {
             $timeout(function() {
                 $location.path('/reports');

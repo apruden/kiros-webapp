@@ -1,5 +1,5 @@
 <div>
-	<form role="form" ng-submit="saveReport()">
+	<form role="form" ng-submit="saveReport(form)">
 		<div class="form-group">
 			<label>Date</label>
 			<div>
@@ -17,11 +17,11 @@
 		</div>
 		<div class="form-group">
 			<label>Client</label>
-			<input type="text" class="form-control" ng-model="report.client"/>
+			<input type="text" class="form-control" ng-model="report.client" required/>
 		</div>
 		<div class="form-group">
 			<label>Team</label>
-			<input type="text" class="form-control" ng-model="report.team"/>
+			<input type="text" class="form-control" ng-model="report.team" required/>
 		</div>
 		<div ng-repeat="activity in report.activities" class="form-group">
 			<div class="pull-right">
@@ -37,7 +37,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<button type="button" ng-click="addActivity()" class="btn btn-primary">Add activity</button>
+			<a href="" type="button" ng-click="addActivity()" class="btn btn-flat btn-primary">Add activity</a>
 		</div>
 		<div ng-repeat="blocker in report.blockers" class="form-group">
 			<div class="pull-right">
@@ -47,15 +47,22 @@
 			<textarea rows="2" ng-model="blocker.content" class="form-control" placeholder="Add a blocker ..."></textarea>
 		</div>
 		<div class="form-group">
-			<button type="button" ng-click="addBlocker()" class="btn btn-danger">Add blocker</button>
+			<a href="" type="button" ng-click="addBlocker()" class="btn btn-flat btn-danger">Add blocker</a>
 		</div>
 		<div class="form-group">
-			<div class="button" ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">Attach File</div>
-			<ul ng-repeat="att in attachments">
-				<li>{{att.filename}} <a href ng-click="removeAttachment(att)">remove</a></li>
+			<div ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">
+				<a href="" class="btn btn-default">Attach File</a>
+			</div>
+			<ul ng-repeat="att in attachments" class="list-unstyled">
+				<li>{{att.filename}} <a href="" ng-click="removeAttachment(att)">Remove</a></li>
 			</ul>
+			<div class="progress" ng-repeat="prog in progresses">
+				<div class="progress-bar" role="progressbar" aria-valuenow="{{prog.percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{prog.percent}}%;">
+					{{prog.percent}}%
+				</div>
+			</div>
 		</div>
-		<button type="submit" class="btn btn-primary btn-raised">Save</button>
+		<button type="submit" class="btn btn-primary btn-raised" ng-disabled="progresses.length" >Save</button>
 		<button type="button" class="btn" ng-click="cancel()">Cancel</button>
 	</form>
 	<div>

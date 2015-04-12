@@ -109,6 +109,8 @@ angular
                     }
                 }
 
+                $rootScope.$broadcast('error', rejection);
+
                 return $q.reject(rejection);
             }
         };
