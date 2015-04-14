@@ -5,8 +5,8 @@
 			<!-- TODO: when permissions are implemented -->
 			<!--<button class="btn" ng-click="deleteReport($item)">delete</button>-->
 		</div>
-		<h2>{{report.modifiedBy.username | username}} - {{report.client}} - {{report.team}}</h2>
-		<div>{{report.modified | sdate}}</div>
+		<h2>{{report.createdBy.username | username}} - {{report.client}} - {{report.team}}</h2>
+		<div>Date: {{report.date | sdate}}<span ng-show="report.version > 1">, Modified: {{report.modified | sdate}}, ver: {{report.version}}</span></div>
 		<div ng-repeat="blocker in report.blockers" marked="blocker.content" class="alert alert-danger"></div>
 		<br/>
 		<div ng-repeat="activity in report.activities">

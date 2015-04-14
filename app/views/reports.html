@@ -10,8 +10,8 @@
 					<li><a href="" ng-click="editReport(report)">Edit</a></li>
 				</ul>
 			</div>
-			<h2><a href="#/reports/{{report.id}}">{{report.modifiedBy.username | username}} - {{report.client}} - {{report.team}}</a></h2>
-			<div>{{report.modified | sdate}}</div>
+			<h2><a href="#/reports/{{report.id}}">{{report.createdBy.username | username}} - {{report.client}} - {{report.team}}</a></h2>
+			<div>Date {{report.date | sdate}}<span ng-show="report.version > 1">, Modified: {{report.modified | sdate}}, ver: {{report.version}}</span></div>
 		</div>
 		<div ng-repeat="blocker in report.blockers" marked="blocker.content" class="alert alert-danger"></div>
 		<br/>

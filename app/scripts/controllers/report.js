@@ -46,6 +46,7 @@ angular.module('kirosWebApp')
         date: new Date().toISOString(),
         activities : [{content: '', duration: 0}],
         blockers : [],
+        createdBy: me,
         modifiedBy: me,
         modified: new Date(),
         attachments: []
@@ -121,6 +122,14 @@ angular.module('kirosWebApp')
         $scope.report.modified = new Date().toISOString();
         $scope.report.modifiedBy = me;
         $scope.report.comments = $scope.report.comments || [];
+
+        $scope.report.activities = $scope.report.activities.filter(function(e) {
+            return e.content ? e.content.trim() : e.content;
+        });
+        $scope.report.blockers = $scope.report.blockers.filter(function(e) {
+            return e.content ? e.content.trim() : e.content;
+        });
+
         Reports.save($scope.report).$promise.then(function() {
             $timeout(function() {
                 $location.path('/reports');

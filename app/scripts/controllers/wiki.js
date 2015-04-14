@@ -39,7 +39,8 @@ angular.module('kirosWebApp')
         content: '',
         tags : [],
         comments: [],
-        attachments: []
+        attachments: [],
+        createdBy: me
     };
 
     $scope.upload = function (files) {

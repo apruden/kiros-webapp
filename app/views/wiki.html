@@ -12,12 +12,14 @@
 				</ul>
 			</div>
 			<h2><a href="#/articles/{{article.id}}">{{article.title}}</a></h2>
+			<div>Last edit: {{article.modified | sdate}}, ver: {{article.version}}</div>
 		</div>
+		<br/>
 		<div marked="article.content"></div>
 		<div>
 			<ul class="list-unstyled">
 				<li ng-repeat="attachment in article.attachments">
-				<a href="/assets/{{attachment.id}}">{{attachment.filename}}</a> modified at <span>{{attachment.modified}}</span>
+				<a href="/assets/{{attachment.id}}">{{attachment.filename}}</a> modified at <span>{{attachment.modified | sdate}}</span>
 				</li>
 			</ul>
 		</div>
