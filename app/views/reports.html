@@ -1,4 +1,4 @@
-<div>
+<div class="container">
 	<button class="btn btn-primary" ng-click="addReport()">Add report</button>
 	<article ng-repeat="report in reports" ng-mouseover="showActions(report)" ng-mouseout="hideActions(report)">
 		<div>
@@ -26,7 +26,7 @@
 		</div>
 
 		<div>
-			<ul>
+			<ul class="list-unstyled">
 				<li ng-repeat="att in report.attachments"><a href="https://s3.amazonaws.com/kiros-prime/{{att.id}}" target="_blank">{{att.filename}}</a></li>
 			</ul>
 		</div>

@@ -1,4 +1,4 @@
-<div>
+<div class="container">
 	<article>
 		<div>
 			<button class="btn" ng-click="editReport()">edit</button>
@@ -18,6 +18,13 @@
 			Total: <span class="label label-default" style="width: 3em;">{{total}} hr</span>
 			</p>
 		</div>
+
+		<div>
+			<ul>
+				<li ng-repeat="att in report.attachments"><a href="https://s3.amazonaws.com/kiros-prime/{{att.id}}" target="_blank">{{att.filename}}</a></li>
+			</ul>
+		</div>
+
 		<comments comments="report.comments" target-id="report.id" target-type="report"/>
 	</article>
 </div>
