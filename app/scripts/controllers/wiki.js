@@ -13,6 +13,16 @@ angular.module('kirosWebApp')
 .controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Articles, Comments, Accounts) {
     $scope.articles = Articles.query();
 
+    $scope.loadMore = function() {
+        $scope.offset = $scope.articles.length;
+        Articles.query({offset: $scope.offset}, function(res) {
+            $scope.offset += res.length;
+            res.forEach(function(r) {
+                $scope.articles.push(r);
+            });
+        });
+    };
+
     $scope.showActions = function(a) {
         a.showActions = true;
     };

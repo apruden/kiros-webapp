@@ -26,6 +26,16 @@ angular.module('kirosWebApp')
 
     $scope.reports = Reports.query();
 
+    $scope.loadMore = function() {
+        $scope.offset = $scope.reports.length;
+        Reports.query({offset: $scope.offset}, function(res) {
+            $scope.offset += res.length;
+            res.forEach(function(r) {
+                $scope.reports.push(r);
+            });
+        });
+    };
+
     $scope.addReport = function() {
         console.log('edit report');
         $location.path('/reports/edit');
