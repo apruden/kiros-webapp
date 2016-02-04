@@ -12,6 +12,10 @@ angular.module('kirosWebApp')
     return $resource(
         kirosConfig.prime + '/search');
 }])
+.factory('Aggregations', ['$resource', 'kirosConfig', function($resource, kirosConfig){
+    return $resource(
+        kirosConfig.prime + '/agg');
+}])
 .factory('Articles', ['$resource', 'kirosConfig', function($resource, kirosConfig){
     return $resource(
         kirosConfig.prime + '/articles/:id',

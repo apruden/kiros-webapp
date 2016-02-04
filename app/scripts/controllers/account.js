@@ -18,7 +18,7 @@ angular.module('kirosWebApp')
         $http.post(kirosConfig.auth + '/token', {
             grant_type : 'password',
             scope: 'prime auth',
-            username: $scope.username,
+            username: $scope.username.indexOf('@') < 0 ? $scope.username + '@primefactorsolutions.com' : $scope.username,
             password: $scope.password
         }, {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},

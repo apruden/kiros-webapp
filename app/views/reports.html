@@ -1,37 +1,48 @@
 <div class="container">
-	<button class="btn btn-primary" ng-click="addReport()">Add report</button>
-	<article ng-repeat="report in reports" ng-mouseover="showActions(report)" ng-mouseout="hideActions(report)">
-		<div>
-			<div class="btn-group pull-right" dropdown ng-show="report.showActions">
-				<button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
-					Actions <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="" ng-click="editReport(report)">Edit</a></li>
-				</ul>
-			</div>
-			<h2><a href="#/reports/{{report.id}}">{{report.createdBy.username | username}} - {{report.client}} - {{report.team}}</a></h2>
-			<div>Date {{report.date | sdate}}<span ng-show="report.version > 1">, Modified: {{report.modified | sdate}}, ver: {{report.version}}</span></div>
-		</div>
-		<div ng-repeat="blocker in report.blockers" marked="blocker.content" class="alert alert-danger"></div>
-		<br/>
-		<div ng-repeat="activity in report.activities">
-			<span class="pull-left" style="width: 3em;">{{activity.duration}} hr</span>
-			<div marked="activity.content"></div>
-		</div>
-		<div>
-			<p>
-			Total: <span class="label label-default" style="width: 3em;">{{total(report)}} hr</span>
-			</p>
-		</div>
+  <div class="row">
+    <div class="col-sm-3 sidebar">
+      <ul class="nav nav-sidebar">
+        <li ng-repeat="user in users">
+        <a ng-href="#/search?query={{user.key | rtrim:'@primefactorsolutions.com'}}">{{user.key | rtrim:'@primefactorsolutions.com'}} <span class="badge">{{user.doc_count}}</span></a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9">
+      <button class="btn btn-primary" ng-click="addReport()">Add report</button>
+      <article ng-repeat="report in reports" ng-mouseover="showActions(report)" ng-mouseout="hideActions(report)">
+        <div>
+          <div class="btn-group pull-right" dropdown ng-show="report.showActions">
+            <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+              Actions <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="" ng-click="editReport(report)">Edit</a></li>
+            </ul>
+          </div>
+          <h2><a href="#/reports/{{report.id}}">{{report.createdBy.username | username}} - {{report.client}} - {{report.team}}</a></h2>
+          <div>Date {{report.date | sdate}}<span ng-show="report.version > 1">, Modified: {{report.modified | sdate}}, ver: {{report.version}}</span></div>
+        </div>
+        <div ng-repeat="blocker in report.blockers" marked="blocker.content" class="alert alert-danger"></div>
+        <br/>
+        <div ng-repeat="activity in report.activities">
+          <span class="pull-left" style="width: 3em;">{{activity.duration}} hr</span>
+          <div marked="activity.content"></div>
+        </div>
+        <div>
+          <p>
+          Total: <span class="label label-default" style="width: 3em;">{{total(report)}} hr</span>
+          </p>
+        </div>
 
-		<div>
-			<ul class="list-unstyled">
-				<li ng-repeat="att in report.attachments"><a href="https://s3.amazonaws.com/kiros-prime/{{att.id}}" target="_blank">{{att.filename}}</a></li>
-			</ul>
-		</div>
+        <div>
+          <ul class="list-unstyled">
+            <li ng-repeat="att in report.attachments"><a href="https://s3.amazonaws.com/kiros-prime/{{att.id}}" target="_blank">{{att.filename}}</a></li>
+          </ul>
+        </div>
 
-		<comments comments="report.comments" target-id="report.id" target-type="report"/>
-	</article>
-	<button class="btn btn-default" ng-click="loadMore()">More</button>
+        <comments comments="report.comments" target-id="report.id" target-type="report"/>
+      </article>
+      <button class="btn btn-default" ng-click="loadMore()">More</button>
+    </div>
+  </div>
 </div>

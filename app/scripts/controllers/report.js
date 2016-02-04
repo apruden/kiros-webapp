@@ -9,7 +9,7 @@
 
 angular.module('kirosWebApp')
 
-.controller('ReportsCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Reports, Comments, Accounts) {
+.controller('ReportsCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Accounts', 'Aggregations', function ($scope, $location, $localStorage, Reports, Comments, Accounts, Aggregations) {
     var me = Accounts.get();
 
     $scope.showActions = function(a) {
@@ -23,6 +23,14 @@ angular.module('kirosWebApp')
     $scope.total = function(report) {
         return report.activities.reduce(function(x, y) {return x + y.duration;}, 0);
     };
+
+
+    $scope.users = Aggregations.query({field: 'modifiedBy.username', query: 'typeId:report'});
+    $scope.users.$promise.then(function(result) {
+      result.sort(function(a, b) {
+        return a.key.toLowerCase() > b.key.toLowerCase();
+      });
+    });
 
     $scope.reports = Reports.query();
 

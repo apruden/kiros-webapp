@@ -21,7 +21,8 @@ angular
     'ngStorage',
     'angularFileUpload',
     'ui.bootstrap',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'angular.filter'
 ])
 
 .config(function ($routeProvider, $httpProvider, $locationProvider) {
