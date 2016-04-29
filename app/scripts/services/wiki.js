@@ -32,6 +32,14 @@ angular.module('kirosWebApp')
            offset: '@offset' || 0 });
 }])
 
+.factory('Files', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
+    return $resource(
+        kirosConfig.files + '/files/:id',
+        {id: '@fileId',
+            limit: '@limit' || 20,
+           offset: '@offset' || 0 });
+}])
+
 .factory('Comments', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
     return $resource(
          kirosConfig.prime + '/comments', {});

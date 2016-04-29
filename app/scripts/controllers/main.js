@@ -19,17 +19,17 @@ angular.module('kirosWebApp')
 
 }])
 
-.controller('ModalErrorCtrl', ['$scope', '$modalInstance', '$log','rejection', function($scope, $modalInstance, $log, rejection) {
+.controller('ModalErrorCtrl', ['$scope', '$uibModalInstance', '$log','rejection', function($scope, $uibModalInstance, $log, rejection) {
     $scope.rejection = angular.copy(rejection, {});
     $log.error('Error in $http request: ', JSON.stringify($scope.rejection.config));
     delete $scope.rejection.config;
 
     $scope.ok = function() {
-        $modalInstance.dismiss('ok');
+        $uibModalInstance.dismiss('ok');
     };
 }])
 
-.controller('HeaderCtrl', ['$scope', '$rootScope', '$location', '$localStorage', '$modal', function($scope, $rootScope, $location, $localStorage, $modal) {
+.controller('HeaderCtrl', ['$scope', '$rootScope', '$location', '$localStorage', '$uibModal', function($scope, $rootScope, $location, $localStorage, $uibModal) {
   $scope.authorized = $localStorage.accessToken ? true : false;
   $scope.username = $localStorage.user ? $localStorage.user.username : '';
 
@@ -52,7 +52,7 @@ angular.module('kirosWebApp')
   });
 
   $rootScope.$on('error', function(ev, rejection) {
-      $modal.open({
+      $uibModal.open({
           templateUrl: 'views/error.html',
           controller: 'ModalErrorCtrl',
           resolve: {

@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3 sidebar">
+      <ul class="nav nav-sidebar">
+        <li ng-repeat="user in users">
+        <a ng-href="#/search?query={{user.key | rtrim:'@primefactorsolutions.com'}}">{{user.key | rtrim:'@primefactorsolutions.com'}} <span class="badge">{{user.doc_count}}</span></a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9">
+      <form action="http://localhost:8089/files" method="post" role="form" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button class="btn btn-primary">Add</button>
+      </form>
+      <button class="btn btn-primary" ng-click="addFile()">Add file</button>
+      <article ng-repeat="file in files" ng-mouseover="showActions(file)" ng-mouseout="hideActions(file)">
+        <div>
+          <h2><a href="#/files/{{file.id}}">{{file.createdBy.username | username}} - {{file.client}} - {{file.team}}</a></h2>
+          <div>Date {{file.date | sdate}}<span ng-show="file.version > 1">, Modified: {{file.modified | sdate}}, ver: {{file.version}}</span></div>
+        </div>
+        <br/>
+      </article>
+      <button class="btn btn-default" ng-click="loadMore()">More</button>
+    </div>
+  </div>
+</div>

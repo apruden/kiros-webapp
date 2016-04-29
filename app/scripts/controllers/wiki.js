@@ -10,7 +10,7 @@
 
 angular.module('kirosWebApp')
 
-.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', 'Comments', 'Accounts', function ($scope, $location, $localStorage, Articles, Comments, Accounts) {
+.controller('WikiCtrl', ['$scope', '$location', '$localStorage', 'Articles', function ($scope, $location, $localStorage, Articles) {
     $scope.articles = Articles.query();
 
     $scope.loadMore = function() {
@@ -61,7 +61,7 @@ angular.module('kirosWebApp')
                 pObj.percent = parseInt(100.0 * evt.loaded / evt.total);
             };
 
-            var successHandler = function (data, _status, _headers, config) {
+            var successHandler = function (data) {
                 angular.extend(pObj, {
                     id: data.fileNames[0],
                     modified: new Date().toISOString()
@@ -102,11 +102,10 @@ angular.module('kirosWebApp')
     };
 }])
 
-.controller('ArticleCtrl',['$scope', '$routeParams', '$location', 'Articles', 'Accounts', 'Comments', function($scope, $routeParams, $location, Articles, Accounts, Comments) {
+.controller('ArticleCtrl',['$scope', '$routeParams', '$location', 'Articles', function($scope, $routeParams, $location, Articles) {
     $scope.article = Articles.get({id: $routeParams.id});
 
     $scope.editArticle = function() {
         $location.path('/articles/' + $scope.article.id + '/edit');
     };
-
 }]);

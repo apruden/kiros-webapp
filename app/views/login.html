@@ -1,13 +1,17 @@
 <div class="container">
-	<h1>Login</h1>
-	<div class="alert alert-danger" role="alert" ng-show="error">{{error}}</div>
-	<form ng-submit="login()" role="form">
-		<div class="form-group">
-			<input type="text"  ng-model="username" class="form-control" placeholder="username or email"/>
-		</div>
-		<div class="form-group">
-			<input type="password" ng-model="password" class="form-control" placeholder="password"/>
-		</div>
-		<button type="submit" class="btn btn-primary">submit</button>
-	</form>
+  <div class="row">
+    <div class="col-md-4">
+      <h1>Login</h1>
+      <div class="alert alert-danger" role="alert" ng-show="error">{{error}}</div>
+      <form ng-submit="login()" role="form">
+        <div class="form-group">
+          <input type="text"  ng-model="username" class="form-control" placeholder="username or email"/>
+        </div>
+        <div class="form-group">
+          <input type="password" ng-model="password" class="form-control" placeholder="password"/>
+        </div>
+        <button type="submit" class="btn btn-primary">submit</button>
+      </form>
+    </div>
+  </div>
 </div>

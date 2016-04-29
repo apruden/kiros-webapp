@@ -9,9 +9,7 @@
 
 angular.module('kirosWebApp')
 
-.controller('ReportsCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Accounts', 'Aggregations', function ($scope, $location, $localStorage, Reports, Comments, Accounts, Aggregations) {
-    var me = Accounts.get();
-
+.controller('ReportsCtrl', ['$scope', '$location', '$localStorage', 'Reports', 'Comments', 'Aggregations', function ($scope, $location, $localStorage, Reports, Comments, Aggregations) {
     $scope.showActions = function(a) {
         a.showActions = true;
     };
@@ -110,7 +108,7 @@ angular.module('kirosWebApp')
                 pObj.percent = parseInt(100.0 * evt.loaded / evt.total);
             };
 
-            var successHandler = function (data, _status, _headers, config) {
+            var successHandler = function (data) {
                 angular.extend(pObj, {
                     id: data.fileNames[0],
                     modified: new Date().toISOString()

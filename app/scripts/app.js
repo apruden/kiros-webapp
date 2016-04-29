@@ -19,7 +19,7 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngStorage',
-    'angularFileUpload',
+    'ngFileUpload',
     'ui.bootstrap',
     'angular-loading-bar',
     'angular.filter'
@@ -62,6 +62,10 @@ angular
     .when('/contact', {
         templateUrl: 'views/contact.html',
         controller: 'ContactCtrl'
+    })
+    .when('/files', {
+        templateUrl: 'views/files.html',
+        controller: 'FilesCtrl'
     })
     .when('/reports', {
         templateUrl: 'views/reports.html',
@@ -347,7 +351,7 @@ angular
 
         // Listen for option updates
         var updateOptions = function (current, previous) {
-          if (current === previous) return;
+          if (current === previous)  { return; }
           opts = {};// angular.extend({}, options, scope.$eval(attrs.uiAce));
 
           opts.callbacks = [ opts.onLoad ];
