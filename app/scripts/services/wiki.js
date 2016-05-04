@@ -34,10 +34,7 @@ angular.module('kirosWebApp')
 
 .factory('Files', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
     return $resource(
-        kirosConfig.files + '/files/:id',
-        {id: '@fileId',
-            limit: '@limit' || 20,
-           offset: '@offset' || 0 });
+        kirosConfig.files + '/files/:id');
 }])
 
 .factory('Comments', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
