@@ -1,70 +1,75 @@
 <div class="container">
-	<form role="form" ng-submit="saveReport(form)">
-		<div class="form-group">
-			<label>Date</label>
-			<div>
-				<div class="row">
-					<div class="col-md-6">
-						<p class="input-group">
-						<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="report.date" is-open="report.opened" min-date="minDate" max-date="'2016-12-31'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-						<span class="input-group-btn">
-							<button type="button" class="btn btn-default" ng-click="open($event, report)"><i class="glyphicon glyphicon-calendar"></i></button>
-						</span>
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="form-group">
-			<label>Client</label>
-			<input type="text" class="form-control" ng-model="report.client" required/>
-		</div>
-		<div class="form-group">
-			<label>Team</label>
-			<input type="text" class="form-control" ng-model="report.team" required/>
-		</div>
-		<div ng-repeat="activity in report.activities" class="form-group">
-			<div class="pull-right">
-				<button type="button" tabindex="-1" class="btn btn-default" ng-click="removeActivity(activity)">remove</button>
-			</div>
-			<div class="form-group">
-				<label>Activity </label>
-				<textarea rows="2" ng-model="activity.content" class="form-control" placeholder="Add an activity ..." focusable msg="activityAdded"></textarea>
-			</div>
-			<div class="form-group" ng-show="activity.content">
-				<label>Duration</label>
-				<input type="number" step="0.5" min="0" max="8" ng-model="activity.duration" class="form-control"/>
-			</div>
-		</div>
-		<div class="form-group">
-			<a href="" type="button" ng-click="addActivity()" class="btn btn-flat btn-primary btn-link">Add activity</a>
-		</div>
-		<div ng-repeat="blocker in report.blockers" class="form-group">
-			<div class="pull-right">
-				<a href="" tabindex="-1" ng-click="removeBlocker(blocker)" class="btn btn-default">remove</a>
-			</div>
-			<label><span class="text-danger">Blocker</span></label>
-			<textarea rows="2" ng-model="blocker.content" class="form-control" placeholder="Add a blocker ..." focusable msg="blockerAdded"></textarea>
-		</div>
-		<div class="form-group">
-			<a href="" type="button" ng-click="addBlocker()" class="btn btn-flat btn-danger btn-link">Add blocker</a>
-		</div>
-		<div class="form-group">
-			<div ng-file-select ng-file-change="upload($files)" ng-multiple="multiple">
-				<a href="" class="btn btn-default btn-link">Attach File</a>
-			</div>
-			<ul ng-repeat="att in report.attachments" class="list-unstyled">
-				<li>{{att.filename}} <a href="" ng-click="removeAttachment(att)">Remove</a>
-				<div class="progress" ng-show="att.percent < 100">
-					<div class="progress-bar" role="progressbar" aria-valuenow="{{att.percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{att.percent}}%;">
-						{{att.percent}}%
-					</div>
-				</div>
-				</li>
-			</ul>
-		</div>
-		<button type="submit" class="btn btn-primary btn-raised" ng-disabled="progresses.length" >Save</button>
-		<button type="button" class="btn" ng-click="cancel()">Cancel</button>
-	</form>
-	<div>
+  <div class="row">
+    <div class="col-md-12">
+      <form role="form" ng-submit="saveReport(form)">
+        <div class="form-group">
+          <label>Date</label>
+          <div>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="report.date" is-open="report.opened" min-date="minDate" max-date="'2016-12-31'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="open($event, report)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Client</label>
+          <input type="text" class="form-control" ng-model="report.client" required/>
+        </div>
+        <div class="form-group">
+          <label>Team</label>
+          <input type="text" class="form-control" ng-model="report.team" required/>
+        </div>
+        <div ng-repeat="activity in report.activities">
+          <div class="form-group">
+            <div class="pull-right">
+              <a href type="button" tabindex="-1" class="btn btn-default" ng-click="removeActivity(activity)">remove</a>
+            </div>
+            <label>Activity </label>
+            <textarea rows="2" ng-model="activity.content" class="form-control" placeholder="Add an activity ..." focusable msg="activityAdded"></textarea>
+          </div>
+          <div class="form-group" ng-show="activity.content">
+            <label>Duration</label>
+            <input type="number" step="0.5" min="0" max="8" ng-model="activity.duration" class="form-control"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <a href type="button" ng-click="addActivity()" class="btn btn-flat btn-primary btn-link">Add activity</a>
+        </div>
+        <div ng-repeat="blocker in report.blockers">
+          <div class="form-group">
+            <div class="pull-right">
+              <a href tabindex="-1" ng-click="removeBlocker(blocker)" class="btn btn-default">remove</a>
+            </div>
+            <label><span class="text-danger">Blocker</span></label>
+            <textarea rows="2" ng-model="blocker.content" class="form-control" placeholder="Add a blocker ..." focusable msg="blockerAdded"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <a href type="button" ng-click="addBlocker()" class="btn btn-flat btn-danger btn-link">Add blocker</a>
+        </div>
+        <div class="form-group">
+          <div ngf-select ngf-change="upload($files)" ngf-multiple="multiple">
+            <a href class="btn btn-default btn-link">Attach File</a>
+          </div>
+          <ul ng-repeat="att in report.attachments" class="list-unstyled">
+            <li>{{att.filename}} <a href ng-click="removeAttachment(att)">Remove</a>
+            <div class="progress" ng-show="att.percent < 100">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{att.percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{att.percent}}%;">
+                {{att.percent}}%
+              </div>
+            </div>
+            </li>
+          </ul>
+        </div>
+        <button type="submit" class="btn btn-primary btn-raised" ng-disabled="progresses.length" >Save</button>
+        <button type="button" class="btn" ng-click="cancel()">Cancel</button>
+      </form>
+    </div>
+  </div>
 </div>

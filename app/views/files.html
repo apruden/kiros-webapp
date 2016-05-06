@@ -5,16 +5,38 @@
       </ul>
     </div>
     <div class="col-sm-9">
-      <form action="http://localhost:8089/files" method="post" role="form" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button class="btn btn-primary">Add</button>
-      </form>
-      <article ng-repeat="file in files">
-        <div>
-          <h2><a href="http://localhost:8089/files/{{file}}">{{file}}</a></h2>
+      <form role="form">
+        <div class="form-group">
+          <div ngf-select ngf-change="upload($files)" ngf-multiple="multiple">
+            <a href class="btn btn-primary btn-raised">Attach File</a>
+          </div>
         </div>
-        <br/>
-      </article>
+      </form>
+      <div class="bs-component" ng-if="progress">
+        <div class="progress">
+          <div class="progress-bar" style="width: {{progress}}%;"></div>
+        </div>
+      </div>
+      <div class="bs-component">
+        <div class="form-group">
+          <input class="form-control" type="text" ng-model="filter">
+        </div>
+        <div class="list-group">
+          <div class="list-group-item" ng-repeat="file in files | filter:filter">
+            <div class="row-action-primary">
+              <i class="material-icons">folder</i>
+            </div>
+            <div class="row-content">
+              <div class="least-content">0m</div>
+              <a ng-href="{{kirosConfig.files}}/files/{{file}}" target="_blank">
+                <h4 class="list-group-item-heading">{{file}}</h4>
+                <p class="list-group-item-text">{{file}}</p>
+              </a>
+            </div>
+          </div>
+          <div class="list-group-separator"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -5,7 +5,7 @@ angular.module('kirosWebApp')
 .constant('kirosConfig', {
     auth: 'http://kirosauth-pfs.rhcloud.com',
     prime: 'http://kirosprime-pfs.rhcloud.com',
-    files: 'http://localhost:8089'
+    files: 'http://localhost:20005'
 //    auth: 'http://localhost:20000',
 //    prime: 'http://localhost:20001'
 });

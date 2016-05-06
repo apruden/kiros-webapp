@@ -40,8 +40,8 @@ angular.module('kirosWebApp')
     };
 }])
 
-.controller('ArticleEditCtrl',['$timeout', '$scope', '$location', '$routeParams', '$upload', 'Articles', 'Accounts', 'kirosConfig',
-        function($timeout, $scope, $location, $routeParams, $upload, Articles, Accounts, kirosConfig) {
+.controller('ArticleEditCtrl',['$timeout', '$scope', '$location', '$routeParams', 'Upload', 'Articles', 'Accounts', 'kirosConfig',
+        function($timeout, $scope, $location, $routeParams, Upload, Articles, Accounts, kirosConfig) {
     var me = Accounts.get();
     $scope.article = $routeParams.id ? Articles.get({id: $routeParams.id}) : {
         id: '',
@@ -69,7 +69,7 @@ angular.module('kirosWebApp')
             };
 
             $scope.article.attachments.push(pObj);
-            $upload.upload({
+            Upload.upload({
                 url: kirosConfig.prime + '/assets',
                 file: file
             })
