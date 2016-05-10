@@ -8,14 +8,14 @@
       </ul>
     </div>
     <div class="col-sm-9">
-      <button class="btn btn-primary" ng-click="addReport()">Add report</button>
+      <button class="btn btn-primary btn-raised" ng-click="addReport()">Add report</button>
       <article ng-repeat="report in reports" ng-mouseover="showActions(report)" ng-mouseout="hideActions(report)">
         <div>
-          <div class="btn-group pull-right" dropdown ng-show="report.showActions">
-            <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+          <div class="btn-group pull-right" uib-dropdown ng-show="report.showActions">
+            <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
               Actions <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" role="menu">
+            <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
               <li><a href="" ng-click="editReport(report)">Edit</a></li>
             </ul>
           </div>
@@ -42,7 +42,7 @@
 
         <comments comments="report.comments" target-id="report.id" target-type="report"/>
       </article>
-      <button class="btn btn-default" ng-click="loadMore()">More</button>
+      <button class="btn btn-default btn-raised" ng-click="loadMore()">More</button>
     </div>
   </div>
 </div>

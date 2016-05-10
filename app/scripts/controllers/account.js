@@ -57,7 +57,9 @@ angular.module('kirosWebApp')
     $scope.newpass = '';
     $scope.confirm = '';
 
-    $scope.changePass = function() {
+    $scope.changePass = function(form) {
+      if(form.$valid) {
+
         $http.post(
             kirosConfig.auth + '/me', {
                 oldPassword: $scope.oldpass,
@@ -83,5 +85,6 @@ angular.module('kirosWebApp')
         })
         .error(function() {
         });
+      }
     };
 }]);

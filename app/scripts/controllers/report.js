@@ -57,9 +57,12 @@ angular.module('kirosWebApp')
     function($timeout, $rootScope,  $scope, $location, $routeParams, Upload, Reports, Accounts, kirosConfig) {
       var me = Accounts.get();
       $scope.opened = false;
-      $scope.report = $routeParams.id ? Reports.get({id: $routeParams.id}) : {
+      $scope.report = $routeParams.id ? Reports.get({id: $routeParams.id}, function(report) {
+        report.date = new Date(report.date);
+        return report;
+      }) : {
         id: '',
-        date: new Date().toISOString(),
+        date: new Date(),
         activities : [{content: '', duration: 0}],
         blockers : [],
         createdBy: me,
@@ -83,7 +86,6 @@ angular.module('kirosWebApp')
       };
 
       $scope.removeActivity = function(a) {
-        console.log('>>>',a);
         var idx = $scope.report.activities.indexOf(a);
         $scope.report.activities.splice(idx, 1);
       };
@@ -135,6 +137,7 @@ angular.module('kirosWebApp')
       };
 
       $scope.saveReport = function() {
+        $scope.report.date = $scope.report.date.toISOString();
         $scope.report.modified = new Date().toISOString();
         $scope.report.modifiedBy = me;
         $scope.report.comments = $scope.report.comments || [];

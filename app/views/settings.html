@@ -1,16 +1,23 @@
 <div class="container">
-	<h2>Change password</h2>
-	<alert ng-repeat="msg in messages" type="{{msg.type}}">{{msg.msg}}</alert>
-	<form ng-submit="changePass()" role="form">
-		<div class="form-group">
-			<input type="password" ng-model="oldpass" class="form-control" placeholder="old password"/>
-		</div>
-		<div class="form-group">
-			<input type="password" ng-model="newpass" class="form-control" placeholder="new password"/>
-		</div>
-		<div class="form-group">
-			<input type="password" ng-model="confirm" class="form-control" placeholder="confirm new password"/>
-		</div>
-		<button type="submit" class="btn btn-primary">submit</button>
-	</form>
+  <div class="row">
+    <div class="col-md-12">
+    </div>
+    <h2>Change password</h2>
+    <alert ng-repeat="msg in messages" type="{{msg.type}}">{{msg.msg}}</alert>
+    <form name="passForm" ng-submit="changePass(passForm)" role="form" novalidate>
+      <div class="form-group" ng-class="{'has-error': passForm.oldpass.$invalid}">
+        <label class="control-label">old password</label>
+        <input type="password" name="oldpass" ng-model="oldpass" class="form-control" placeholder="old password" required/>
+      </div>
+      <div class="form-group" ng-class="{'has-error': passForm.newpass.$invalid}">
+        <label class="control-label">new password</label>
+        <input type="password" name="newpass" ng-model="newpass" class="form-control" placeholder="new password" required/>
+      </div>
+      <div class="form-group" ng-class="{'has-error': passForm.confirm.$invalid}">
+        <label class="control-label">confirm</label>
+        <input type="password" name="confirm" ng-model="confirm" class="form-control" placeholder="confirm new password" required/>
+      </div>
+      <button type="submit" class="btn btn-primary btn-raised">submit</button>
+    </form>
+  </div>
 </div>

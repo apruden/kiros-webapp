@@ -1,36 +1,45 @@
 <div class="container">
-  <p ng-hide="hasResults">No results for: <strong>{{q}}</strong></p>
-  <p ng-show="hasResults">Results for: <strong>{{q}}</strong></p>
-
-  <h1>Articles</h1>
-  <article ng-repeat="article in articles">
-    <div>
-      <h2><a href="#/articles/{{article.id}}">{{article.title}}</a></h2>
-    </div>
-    <div>
-      <div class="media" ng-repeat="comment in report.comments[report.id]">
-        <div class="pull-right">
-          <a href="">{{comment.postedBy.username}}</a> <span timeago="comment.posted"></span>
+  <div class="row">
+    <div class="col-md-12">
+      <p ng-hide="hasResults">No results for: <strong>{{q}}</strong></p>
+      <p ng-show="hasResults">Results for: <strong>{{q}}</strong></p>
+      <h1>Articles</h1>
+      <div class="list-group">
+        <div class="list-group-item" ng-repeat="article in articles">
+          <div class="row-action-primary">
+            <i class="material-icons">description</i>
+          </div>
+          <div class="row-content">
+            <div class="least-content">{{article.modified | sdate}}</div>
+            <a ng-href="#/articles/{{article.id}}">
+              <h4 class="list-group-item-heading">{{article.title}}</h4>
+              <p class="list-group-item-text">{{article.modifiedBy.username | username}}</p>
+            </a>
+          </div>
         </div>
-        <div class="media-body" marked="comment.content">
-        </div>
+        <div class="list-group-separator"></div>
       </div>
     </div>
-  </article>
-
-  <h1>Reports</h1>
-  <article ng-repeat="report in reports">
-    <div>
-      <h2><a href="#/reports/{{report.id}}">{{report.modifiedBy.username | username}} - {{report.modified | sdate}}</a></h2>
-    </div>
-    <div ng-repeat="blocker in report.blockers" marked="blocker.content" class="alert alert-danger"></div>
-    <div>
-      <div class="media" ng-repeat="comment in report.comments[report.id]">
-        <div class="pull-right">
-          <a href="">{{comment.postedBy.username}}</a> <span timeago="comment.posted"></span>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Reports</h1>
+      <div class="list-group">
+        <div class="list-group-item" ng-repeat="report in reports">
+          <div class="row-action-primary">
+            <i class="material-icons">{{report.modifiedBy.username[0].toUpperCase()}}</i>
+          </div>
+          <div class="row-content">
+            <div class="least-content">{{report.modified | sdate}}</div>
+            <a ng-href="#/reports/{{report.id}}">
+              <h4 class="list-group-item-heading">{{report.modifiedBy.username | username}} - {{report.modified | sdate}}</h4>
+              <p class="list-group-item-text">{{report.modifiedBy.username | username}}</p>
+              <div ng-repeat="blocker in report.blockers" marked="blocker.content" class="alert alert-danger"></div>
+            </a>
+          </div>
         </div>
-        <div class="media-body" marked="comment.content"></div>
+        <div class="list-group-separator"></div>
       </div>
     </div>
-  </article>
+  </div>
 </div>

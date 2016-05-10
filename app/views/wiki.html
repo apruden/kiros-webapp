@@ -1,29 +1,29 @@
 <div class="container">
-	<button class="btn btn-primary" ng-click="addArticle()">Add article</button>
-	<article ng-repeat="article in articles" ng-mouseover="showActions(article)" ng-mouseout="hideActions(article)">
-		<div>
-			<div class="btn-group pull-right" dropdown ng-show="article.showActions">
-				<button type="button" class="btn btn-default btn-flat dropdown-toggle" dropdown-toggle> Actions <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="" ng-click="editArticle(article)">Edit</a></li>
-					<!-- TODO -->
-					<!--<li><a href="#" ng-click="deleteArticle(article)">Delete</a></li>-->
-				</ul>
-			</div>
-			<h2><a href="#/articles/{{article.id}}">{{article.title}}</a></h2>
-			<div>Last edit: {{article.modified | sdate}}, ver: {{article.version}}</div>
-		</div>
-		<br/>
-		<div marked="article.content"></div>
-		<div>
-			<ul class="list-unstyled">
-				<li ng-repeat="attachment in article.attachments">
-				<a href="https://s3.amazonaws.com/kiros-prime/{{attachment.id}}" target="_blank">{{attachment.filename}}</a> modified at <span>{{attachment.modified | sdate}}</span>
-				</li>
-			</ul>
-		</div>
-		<comments comments="article.comments" target-id="article.id" target-type="article"/>
-	</article>
-	<button class="btn btn-default" ng-click="loadMore()">More</button>
+  <button class="btn btn-primary btn-raised" ng-click="addArticle()">Add article</button>
+  <article ng-repeat="article in articles" ng-mouseover="showActions(article)" ng-mouseout="hideActions(article)">
+    <div>
+      <div class="btn-group pull-right" uib-dropdown ng-show="article.showActions">
+        <button type="button" class="btn btn-default btn-flat dropdown-toggle" uib-dropdown-toggle> Actions <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
+          <li><a href="" ng-click="editArticle(article)">Edit</a></li>
+          <!-- TODO -->
+          <!--<li><a href="#" ng-click="deleteArticle(article)">Delete</a></li>-->
+        </ul>
+      </div>
+      <h2><a href="#/articles/{{article.id}}">{{article.title}}</a></h2>
+      <div>Last edit: {{article.modified | sdate}}, ver: {{article.version}}</div>
+    </div>
+    <br/>
+    <div marked="article.content"></div>
+    <div>
+      <ul class="list-unstyled">
+        <li ng-repeat="attachment in article.attachments">
+        <a href="https://s3.amazonaws.com/kiros-prime/{{attachment.id}}" target="_blank">{{attachment.filename}}</a> modified at <span>{{attachment.modified | sdate}}</span>
+        </li>
+      </ul>
+    </div>
+    <comments comments="article.comments" target-id="article.id" target-type="article"/>
+  </article>
+  <button class="btn btn-default btn-raised" ng-click="loadMore()">More</button>
 </div>
