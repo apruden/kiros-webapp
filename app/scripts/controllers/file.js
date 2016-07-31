@@ -30,7 +30,7 @@ angular.module('kirosWebApp')
       };
 
       var upload = Upload.upload({
-        url: kirosConfig.files + '/files',
+        url: kirosConfig.services.files + '/files',
         file: file
       });
 

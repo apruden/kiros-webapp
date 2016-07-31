@@ -119,7 +119,7 @@ angular.module('kirosWebApp')
 
           $scope.report.attachments.push(pObj);
           Upload.upload({
-            url: kirosConfig.prime + '/assets',
+            url: kirosConfig.services.prime + '/assets',
             file: file
           })
           .progress(progressHandler)

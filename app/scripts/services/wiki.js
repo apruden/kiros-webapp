@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('kirosWebApp')
+
 .service('SearchResult', function() {
     var self = this;
     self.current = {};
@@ -8,17 +9,25 @@ angular.module('kirosWebApp')
         self.current = c;
     };
 })
+
+.factory('Presence', ['$resource', 'kirosConfig', function($resource, kirosConfig){
+    return $resource(
+        kirosConfig.services.prime + '/beats/_aggs');
+}])
+
 .factory('Search', ['$resource', 'kirosConfig', function($resource, kirosConfig){
     return $resource(
-        kirosConfig.prime + '/search');
+        kirosConfig.services.prime + '/_search');
 }])
+
 .factory('Aggregations', ['$resource', 'kirosConfig', function($resource, kirosConfig){
     return $resource(
-        kirosConfig.prime + '/agg');
+        kirosConfig.services.prime + '/_aggs');
 }])
+
 .factory('Articles', ['$resource', 'kirosConfig', function($resource, kirosConfig){
     return $resource(
-        kirosConfig.prime + '/articles/:id',
+        kirosConfig.services.prime + '/articles/:id',
         {id: '@articleId',
          limit: '@limit' || 20,
          offset: '@offset' || 0 });
@@ -26,7 +35,7 @@ angular.module('kirosWebApp')
 
 .factory('Reports', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
     return $resource(
-        kirosConfig.prime + '/reports/:id',
+        kirosConfig.services.prime + '/reports/:id',
         {id: '@reportId',
             limit: '@limit' || 20,
            offset: '@offset' || 0 });
@@ -34,16 +43,16 @@ angular.module('kirosWebApp')
 
 .factory('Files', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
     return $resource(
-        kirosConfig.files + '/files/:id');
+        kirosConfig.services.files + '/files/:id');
 }])
 
 .factory('Comments', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
     return $resource(
-         kirosConfig.prime + '/comments', {});
+         kirosConfig.services.prime + '/comments', {});
 }])
 
 .factory('Accounts', ['$resource', 'kirosConfig', function($resource, kirosConfig) {
-    return $resource(kirosConfig.auth + '/me',{}, {
+    return $resource(kirosConfig.services.auth + '/me',{}, {
         get: {
                 method: 'GET'
             },

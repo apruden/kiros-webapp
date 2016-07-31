@@ -62,6 +62,10 @@ angular
     templateUrl: 'views/contact.html',
     controller: 'ContactCtrl'
   })
+  .when('/presence', {
+    templateUrl: 'views/presence.html',
+    controller: 'PresenceCtrl'
+  })
   .when('/files', {
     templateUrl: 'views/files.html',
     controller: 'FilesCtrl'
@@ -133,7 +137,26 @@ angular
 
 .filter('sdate', function() {
   return function(t) {
-    return new Date(Date.parse(t)).toDateString();
+    var tmp = Date.parse(t);
+
+    if (!tmp) {
+      tmp = parseInt(t, 10);
+    }
+
+    return new Date(tmp).toDateString();
+  };
+})
+
+.filter('stime', function() {
+  return function(t) {
+    var tmp = Date.parse(t);
+
+    if (!tmp) {
+      tmp = parseInt(t, 10);
+    }
+
+    var tmp2 = new Date(tmp);
+    return tmp2.getHours() + ':' + (tmp2.getMinutes() < 10 ? '0' + tmp2.getMinutes() : tmp2.getMinutes());
   };
 })
 

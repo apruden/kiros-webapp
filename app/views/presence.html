@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3 sidebar">
+      <ul class="nav nav-sidebar">
+      </ul>
+    </div>
+    <div class="col-sm-9">
+      <h1>Presence</h1>
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="entry in presence">
+          <h4>{{entry.key | sdate}}</h4>
+          <table class="table table-condensed">
+            <thead>
+              <th>Id</th>
+              <th>Start</th>
+              <th>End</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="data in entry.presence.buckets">
+              <td>{{kirosConfig.presence.mapping[data.key] || data.key}}</td>
+              <td ng-class="{warning: parseInt(data.min_timestamp.value, 10) > kirosConfig.presence.minThreshold}">{{data.min_timestamp.value | stime}}</td>
+              <td>{{data.max_timestamp.value | stime}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

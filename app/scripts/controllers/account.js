@@ -15,7 +15,7 @@ angular.module('kirosWebApp')
     $scope.error = '';
 
     $scope.login = function () {
-        $http.post(kirosConfig.auth + '/token', {
+        $http.post(kirosConfig.services.auth + '/token', {
             grant_type : 'password',
             scope: 'prime auth',
             username: $scope.username.indexOf('@') < 0 ? $scope.username + '@primefactorsolutions.com' : $scope.username,
@@ -61,7 +61,7 @@ angular.module('kirosWebApp')
       if(form.$valid) {
 
         $http.post(
-            kirosConfig.auth + '/me', {
+            kirosConfig.services.auth + '/me', {
                 oldPassword: $scope.oldpass,
                 newPassword: $scope.newpass
             }, {
