@@ -64,7 +64,8 @@ angular.module('kirosWebApp')
             var successHandler = function (data) {
                 angular.extend(pObj, {
                     id: data.fileNames[0],
-                    modified: new Date().toISOString()
+                    modified: new Date().toISOString(),
+                    downloadUrl: ''
                 });
             };
 
