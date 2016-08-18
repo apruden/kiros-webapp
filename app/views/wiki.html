@@ -19,7 +19,7 @@
     <div>
       <ul class="list-unstyled">
         <li ng-repeat="attachment in article.attachments">
-        <a href="https://s3.amazonaws.com/kiros-prime/{{attachment.id}}" target="_blank">{{attachment.filename}}</a> modified at <span>{{attachment.modified | sdate}}</span>
+        <a href="{{attachment.downloadUrl}}" download>{{attachment.filename}}</a> modified at <span>{{attachment.modified | sdate}}</span>
         </li>
       </ul>
     </div>

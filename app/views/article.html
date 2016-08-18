@@ -1,19 +1,19 @@
 <div class="container">
-	<article>
-		<div>
-			<button class="btn" ng-click="editArticle()">edit</button>
-			<!--<button class="btn" ng-click="deleteArticle($item)">delete</button>-->
-		</div>
-		<h2>{{article.title}}</h2>
-		<div>last modified: {{article.modified | sdate}} ver: {{article.version}}</div>
-		<div marked="article.content"></div>
+  <article>
+    <div>
+      <button class="btn" ng-click="editArticle()">edit</button>
+      <!--<button class="btn" ng-click="deleteArticle($item)">delete</button>-->
+    </div>
+    <h2>{{article.title}}</h2>
+    <div>last modified: {{article.modified | sdate}} ver: {{article.version}}</div>
+    <div marked="article.content"></div>
 
-		<div>
-			<ul class="list-unstyled">
-				<li ng-repeat="att in article.attachments"><a href="https://s3.amazonaws.com/kiros-prime/{{att.id}}" target="_blank">{{att.filename}}</a></li>
-			</ul>
-		</div>
+    <div>
+      <ul class="list-unstyled">
+        <li ng-repeat="att in article.attachments"><a href="{{att.downloadUrl}}" download>{{att.filename}}</a></li>
+      </ul>
+    </div>
 
-		<comments comments="article.comments" target-id="article.id" target-type="article"/>
-	</article>
+    <comments comments="article.comments" target-id="article.id" target-type="article"/>
+  </article>
 </div>
